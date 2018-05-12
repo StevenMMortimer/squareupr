@@ -3,8 +3,8 @@ context("Authorization")
 test_that("testing missing auth", {
   expect_false(token_available())
   expect_null(sq_access_token())
-  expect_false(session_id_available())
-  expect_null(sq_session_id())
+  expect_false(personal_access_token_available())
+  expect_null(sq_personal_access_token())
 })
 
 test_that("testing nonsense inputs", {

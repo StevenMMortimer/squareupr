@@ -56,19 +56,6 @@ First, load the **squareupr** package and login. There are two ways to authentic
   1. Personal Access Token
   2. OAuth 2.0
 
-NOTE: Before using OAuth 2.0 authentication it is necessary that you setup your 
-own Connected App in the Square dashboard. An App ID and App Secret will be 
-provided, then you will be able to plug into your script like so:
-
-```{r other-params, eval=FALSE}
-options(squareupr.app_id = "sq0-99-thisisatest99connected33app22id")
-options(squareupr.app_secret = "sq0-Th1s1sMyAppS3cr3t")
-sq_auth()
-```
-
-OAuth 2.0 credentials will be cached locally in a file entitled `".httr-oauth-squareupr"` 
-in the current working directory so that a new token is not needed each session.
-
 ```{r auth, include = FALSE}
 suppressWarnings(suppressMessages(library(dplyr)))
 library(squareupr)
@@ -81,12 +68,25 @@ suppressMessages(sq_auth(personal_access_token = settings$personal_access_token,
 suppressWarnings(suppressMessages(library(dplyr)))
 library(squareupr)
 
-# Using OAuth 2.0 authentication
-sq_auth()
-
 # Using Personal Access Token (PAT)
 sq_auth(personal_access_token = "{PERSONAL_ACCESS_TOKEN_HERE}")
+
+# Using OAuth 2.0 authentication
+sq_auth()
 ```
+
+NOTE: Before using OAuth 2.0 authentication it is necessary that you setup your 
+own Connected App in the Square dashboard. An App ID and App Secret will be 
+provided, then you will be able to plug into your script like so:
+
+```{r other-params, eval=FALSE}
+options(squareupr.app_id = "sq0-99-thisisatest99connected33app22id")
+options(squareupr.app_secret = "sq0-Th1s1sMyAppS3cr3t")
+sq_auth()
+```
+
+OAuth 2.0 credentials will be cached locally in a file entitled `".httr-oauth-squareupr"` 
+in the current working directory so that a new token is not needed each session.
 
 ### Locations
 You can pull information regarding locations for a specific location or listing 

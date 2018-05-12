@@ -45,6 +45,17 @@ First, load the **squareupr** package and login. There are two ways to authentic
 1.  Personal Access Token
 2.  OAuth 2.0
 
+``` r
+suppressWarnings(suppressMessages(library(dplyr)))
+library(squareupr)
+
+# Using Personal Access Token (PAT)
+sq_auth(personal_access_token = "{PERSONAL_ACCESS_TOKEN_HERE}")
+
+# Using OAuth 2.0 authentication
+sq_auth()
+```
+
 NOTE: Before using OAuth 2.0 authentication it is necessary that you setup your own Connected App in the Square dashboard. An App ID and App Secret will be provided, then you will be able to plug into your script like so:
 
 ``` r
@@ -54,17 +65,6 @@ sq_auth()
 ```
 
 OAuth 2.0 credentials will be cached locally in a file entitled `".httr-oauth-squareupr"` in the current working directory so that a new token is not needed each session.
-
-``` r
-suppressWarnings(suppressMessages(library(dplyr)))
-library(squareupr)
-
-# Using OAuth 2.0 authentication
-sq_auth()
-
-# Using Personal Access Token (PAT)
-sq_auth(personal_access_token = "{PERSONAL_ACCESS_TOKEN_HERE}")
-```
 
 ### Locations
 

@@ -105,14 +105,14 @@
     
 
 <p><br><img src="reference/figures/squareupr.png" width="120px" align="right"></p>
-<p><strong>squareupr</strong> is an R package that connects to Square APIs (Connect v1 &amp; v2).</p>
+<p><strong>squareupr</strong> is an R package that connects to the Square APIs (Connect v1 &amp; v2).</p>
 <ul>
 <li>OAuth 2.0 (Single sign-on) and Personal Access Token Authentication methods (<code><a href="reference/sq_auth.html">sq_auth()</a></code>)</li>
-<li>v2 Locations Endpoint</li>
-<li>v2 Customers Endpoint</li>
-<li>v2 Transactions Endpoint</li>
-<li>v1 Payments Endpoint</li>
-<li>v1 Orders Endpoint</li>
+<li>v2 Locations Endpoint (<code><a href="reference/sq_list_locations.html">sq_list_locations()</a></code>, <code><a href="reference/sq_get_location.html">sq_get_location()</a></code>)</li>
+<li>v2 Customers Endpoint (<code><a href="reference/sq_list_customers.html">sq_list_customers()</a></code>, <code><a href="reference/sq_get_customer.html">sq_get_customer()</a></code>)</li>
+<li>v2 Transactions Endpoint - TODO (<code>sq_list_transactions()</code>, <code><a href="reference/sq_get_transaction.html">sq_get_transaction()</a></code>)</li>
+<li>v1 Payments Endpoint - TODO</li>
+<li>v1 Orders Endpoint - TODO</li>
 </ul>
 <div id="table-of-contents" class="section level2">
 <h2 class="hasAnchor">
@@ -150,19 +150,19 @@ devtools<span class="op">::</span><span class="kw"><a href="http://www.rdocument
 <li>Personal Access Token</li>
 <li>OAuth 2.0</li>
 </ol>
-<p>NOTE: It is recommended to use OAuth 2.0 so that passwords do not have to be shared or embedded within scripts. However, to use OAuth 2.0 authentication it is necessary that you setup your own Connected App in the Square dashboard. An app id and app secret will be provided, then you will be able to plug into your script like so:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">suppressWarnings</span>(<span class="kw">suppressMessages</span>(<span class="kw">library</span>(dplyr)))
+<span class="kw">library</span>(squareupr)
+
+<span class="co"># Using Personal Access Token (PAT)</span>
+<span class="kw"><a href="reference/sq_auth.html">sq_auth</a></span>(<span class="dt">personal_access_token =</span> <span class="st">"{PERSONAL_ACCESS_TOKEN_HERE}"</span>)
+
+<span class="co"># Using OAuth 2.0 authentication</span>
+<span class="kw"><a href="reference/sq_auth.html">sq_auth</a></span>()</code></pre></div>
+<p>NOTE: Before using OAuth 2.0 authentication it is necessary that you setup your own Connected App in the Square dashboard. An App ID and App Secret will be provided, then you will be able to plug into your script like so:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">options</span>(<span class="dt">squareupr.app_id =</span> <span class="st">"sq0-99-thisisatest99connected33app22id"</span>)
 <span class="kw">options</span>(<span class="dt">squareupr.app_secret =</span> <span class="st">"sq0-Th1s1sMyAppS3cr3t"</span>)
 <span class="kw"><a href="reference/sq_auth.html">sq_auth</a></span>()</code></pre></div>
 <p>OAuth 2.0 credentials will be cached locally in a file entitled <code>".httr-oauth-squareupr"</code> in the current working directory so that a new token is not needed each session.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">suppressWarnings</span>(<span class="kw">suppressMessages</span>(<span class="kw">library</span>(dplyr)))
-<span class="kw">library</span>(squareupr)
-
-<span class="co"># Using OAuth 2.0 authentication</span>
-<span class="kw"><a href="reference/sq_auth.html">sq_auth</a></span>()
-
-<span class="co"># Using Personal Access Token (PAT)</span>
-<span class="kw"><a href="reference/sq_auth.html">sq_auth</a></span>(<span class="dt">personal_access_token =</span> <span class="st">"{PERSONAL_ACCESS_TOKEN_HERE}"</span>)</code></pre></div>
 </div>
 <div id="locations" class="section level3">
 <h3 class="hasAnchor">
