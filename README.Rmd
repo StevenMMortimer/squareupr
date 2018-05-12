@@ -58,7 +58,7 @@ It is recommended to use OAuth 2.0 so that passwords do not have to be shared or
 embedded within scripts. User credentials will be stored in locally cached file 
 entitled `".httr-oauth-squareupr"` in the current working directory.
 
-```{r auth, include = FALSE}
+```{r auth, include = FALSE, eval=FALSE}
 suppressWarnings(suppressMessages(library(dplyr)))
 suppressWarnings(suppressMessages(library(purrr)))
 suppressWarnings(suppressMessages(library(here)))
@@ -83,12 +83,7 @@ After logging in with `sf_auth()`, you can check your connectivity by looking at
 the information returned about the current user. It should be information about you!
 
 ```{r}
-# pull down information of person logged in
-# it's a simple easy call to get started 
-# and confirm a connection to the APIs
-user_info <- sf_user_info()
-sprintf("User Id: %s", user_info$id)
-sprintf("User Active?: %s", user_info$isActive)
+# nothing yet!
 ```
 
 ## Credits
