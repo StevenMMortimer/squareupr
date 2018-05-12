@@ -6,7 +6,7 @@ squareupr<img src="man/figures/squareupr.png" width="120px" align="right" />
 
 **squareupr** is an R package that connects to Square APIs (Connect v1 & v2).
 
--   OAuth 2.0 (Single sign-on) and Personal Acces Token Authentication methods (`sq_auth()`)
+-   OAuth 2.0 (Single sign-on) and Personal Access Token Authentication methods (`sq_auth()`)
 -   v2 Locations Endpoint
 -   v2 Customers Endpoint
 -   v2 Transactions Endpoint
@@ -19,6 +19,8 @@ Table of Contents
 -   [Installation](#installation)
 -   [Usage](#usage)
     -   [Authenticate](#authenticate)
+    -   [Locations](#locations)
+    -   [Customers](#customers)
 -   [Credits](#credits)
 -   [More Information](#more-information)
 
@@ -40,27 +42,107 @@ Usage
 
 First, load the **squareupr** package and login. There are two ways to authenticate:
 
-1.  OAuth 2.0
-2.  Personal Access Token
+1.  Personal Access Token
+2.  OAuth 2.0
 
-It is recommended to use OAuth 2.0 so that passwords do not have to be shared or embedded within scripts. User credentials will be stored in locally cached file entitled `".httr-oauth-squareupr"` in the current working directory.
+NOTE: It is recommended to use OAuth 2.0 so that passwords do not have to be shared or embedded within scripts. However, to use OAuth 2.0 authentication it is necessary that you setup your own Connected App in the Square dashboard. An app id and app secret will be provided, then you will be able to plug into your script like so:
+
+``` r
+options(squareupr.app_id = "sq0-99-thisisatest99connected33app22id")
+options(squareupr.app_secret = "sq0-Th1s1sMyAppS3cr3t")
+sq_auth()
+```
+
+OAuth 2.0 credentials will be cached locally in a file entitled `".httr-oauth-squareupr"` in the current working directory so that a new token is not needed each session.
 
 ``` r
 suppressWarnings(suppressMessages(library(dplyr)))
-suppressWarnings(suppressMessages(library(purrr)))
 library(squareupr)
 
 # Using OAuth 2.0 authentication
 sq_auth()
 
-# Using Basic Username-Password authentication
+# Using Personal Access Token (PAT)
 sq_auth(personal_access_token = "{PERSONAL_ACCESS_TOKEN_HERE}")
 ```
 
-After logging in with `sq_auth()`, you can check your connectivity by looking at the information returned about the current user. It should be information about you!
+### Locations
+
+You can pull information regarding locations for a specific location or listing all locations.
 
 ``` r
-# nothing yet!
+# list all locations
+our_locations <- sq_list_locations()
+our_locations$name <- "{HIDDEN}"
+our_locations %>% select(id, name, address, timezone, 
+                        capabilities, status, created_at)
+#> # A tibble: 5 x 7
+#>   id            name     address  timezone  capabilities status created_at
+#>   <chr>         <chr>    <list>   <chr>     <list>       <chr>  <chr>     
+#> 1 46FYN9N9RQS54 {HIDDEN} <list [… America/… <chr [1]>    ACTIVE 2017-04-2…
+#> 2 DRDCJ2X8E2PMV {HIDDEN} <list [… America/… <chr [1]>    ACTIVE 2016-09-2…
+#> 3 8T1TYXE840S00 {HIDDEN} <list [… America/… <chr [1]>    ACTIVE 2016-09-2…
+#> 4 1AWPRVVVFWGQF {HIDDEN} <list [… America/… <chr [1]>    ACTIVE 2017-04-1…
+#> 5 50X1GNAWEC8V0 {HIDDEN} <list [… America/… <chr [1]>    ACTIVE 2017-03-0…
+
+# search by id
+one_location <- sq_get_location(our_locations$id[1])
+this_location_name <- one_location$name[1]
+one_location$name <- "{HIDDEN}"
+one_location %>% select(id, name, address, timezone, 
+                        capabilities, status, created_at)
+#> # A tibble: 1 x 7
+#>   id            name     address  timezone  capabilities status created_at
+#>   <chr>         <chr>    <list>   <chr>     <list>       <chr>  <chr>     
+#> 1 46FYN9N9RQS54 {HIDDEN} <list [… America/… <chr [1]>    ACTIVE 2017-04-2…
+
+# search by name (must be an exact match)
+one_location <- sq_get_location(this_location_name)
+one_location$name <- "{HIDDEN}"
+one_location %>% select(id, name, address, timezone, 
+                        capabilities, status, created_at)
+#> # A tibble: 1 x 7
+#>   id            name     address  timezone  capabilities status created_at
+#>   <chr>         <chr>    <list>   <chr>     <list>       <chr>  <chr>     
+#> 1 46FYN9N9RQS54 {HIDDEN} <list [… America/… <chr [1]>    ACTIVE 2017-04-2…
+```
+
+### Customers
+
+Similarly, you can pull information regarding a specific customer or listing all customers.
+
+``` r
+# list all locations
+our_customers <- sq_list_customers()
+our_customers$given_name <- "{HIDDEN}"
+our_customers$family_name <- "{HIDDEN}"
+our_customers %>% select(id, created_at, updated_at, 
+                         given_name, family_name, preferences, groups)
+#> # A tibble: 100 x 7
+#>    id     created_at  updated_at given_name family_name preferences groups
+#>    <chr>  <chr>       <chr>      <chr>      <chr>       <list>      <list>
+#>  1 M1RBD… 2017-01-09… 2018-02-0… {HIDDEN}   {HIDDEN}    <lgl [1]>   <list…
+#>  2 56EB9… 2017-12-11… 2018-02-0… {HIDDEN}   {HIDDEN}    <lgl [1]>   <NULL>
+#>  3 Z2HYX… 2017-12-19… 2018-02-0… {HIDDEN}   {HIDDEN}    <lgl [1]>   <NULL>
+#>  4 017CX… 2017-10-04… 2018-02-0… {HIDDEN}   {HIDDEN}    <lgl [1]>   <NULL>
+#>  5 58MK9… 2017-11-16… 2018-02-0… {HIDDEN}   {HIDDEN}    <lgl [1]>   <list…
+#>  6 T5HXZ… 2018-01-02… 2018-02-0… {HIDDEN}   {HIDDEN}    <lgl [1]>   <NULL>
+#>  7 MBSJA… 2017-05-31… 2017-05-3… {HIDDEN}   {HIDDEN}    <lgl [1]>   <list…
+#>  8 ECVG5… 2017-09-30… 2018-03-1… {HIDDEN}   {HIDDEN}    <lgl [1]>   <list…
+#>  9 H8BZA… 2017-07-06… 2018-02-1… {HIDDEN}   {HIDDEN}    <lgl [1]>   <list…
+#> 10 ZCBZJ… 2018-01-16… 2018-03-0… {HIDDEN}   {HIDDEN}    <lgl [1]>   <list…
+#> # ... with 90 more rows
+
+# search by id
+one_customer <- sq_get_customer(our_customers$id[1])
+one_customer$given_name <- "{HIDDEN}"
+one_customer$family_name <- "{HIDDEN}"
+one_customer %>% select(id, created_at, updated_at, 
+                        given_name, family_name, preferences, groups)
+#> # A tibble: 1 x 7
+#>   id      created_at  updated_at given_name family_name preferences groups
+#>   <chr>   <chr>       <chr>      <chr>      <chr>       <list>      <list>
+#> 1 M1RBDF… 2017-01-09… 2018-02-0… {HIDDEN}   {HIDDEN}    <lgl [1]>   <list…
 ```
 
 Credits

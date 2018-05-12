@@ -4,7 +4,7 @@
 \alias{rGET}
 \title{GETs with retries and authentication}
 \usage{
-rGET(url, headers = character(0), ...)
+rGET(...)
 }
 \description{
 GETs with retries and authentication

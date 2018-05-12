@@ -1,5 +1,5 @@
 library(testthat)
-suppressWarnings(suppressMessages(library(tidyverse)))
+suppressWarnings(suppressMessages(library(dplyr)))
 suppressWarnings(suppressMessages(library(squareupr)))
 
 if (identical(tolower(Sys.getenv("NOT_CRAN")), "true") & 

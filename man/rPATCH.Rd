@@ -4,7 +4,7 @@
 \alias{rPATCH}
 \title{PATCHs with retries and authentication}
 \usage{
-rPATCH(url, headers = character(0), ...)
+rPATCH(...)
 }
 \description{
 PATCHs with retries and authentication

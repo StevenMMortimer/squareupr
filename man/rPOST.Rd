@@ -4,7 +4,7 @@
 \alias{rPOST}
 \title{POSTs with retries and authentication}
 \usage{
-rPOST(url, headers = character(0), ...)
+rPOST(...)
 }
 \description{
 POSTs with retries and authentication

@@ -4,7 +4,7 @@
 \alias{rPUT}
 \title{PUTs with retries and authentication}
 \usage{
-rPUT(url, headers = character(0), ...)
+rPUT(...)
 }
 \description{
 PUTs with retries and authentication

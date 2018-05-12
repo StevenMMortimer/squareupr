@@ -42,14 +42,6 @@ options(squareupr.app_secret = "sq0-Th1s1sMyAppS3cr3t")
 sq_auth()
 ```
 
-After logging in with `sq_auth()`, you can check your connectivity by looking at 
-the information returned about the current user. It should be information about you!
-
-
-```r
-# nothing yet!
-```
-
 ### Check out the Tests
 
 The **squareupr** package has quite a bit of unit test coverage to track any 

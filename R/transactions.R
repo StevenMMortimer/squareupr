@@ -4,7 +4,7 @@
 #' 
 #' @importFrom dplyr as_tibble 
 #' @importFrom purrr modify_if
-#' @importFrom httr parse_url build_url GET content
+#' @importFrom httr content add_headers
 #' @template location
 #' @template transaction_id
 #' @template verbose
@@ -30,8 +30,8 @@ sq_get_transaction <- function(location,
   
   if(verbose) message(httr_url)
   
-  httr_response <- GET(httr_url, add_headers(Authorization = sprintf("Bearer %s", sq_token()), 
-                                             Accept = "application/json"))
+  httr_response <- rGET(httr_url, add_headers(Authorization = sprintf("Bearer %s", sq_token()), 
+                                              Accept = "application/json"))
   response_parsed <- content(httr_response, "parsed")
   resultset <- response_parsed %>%
     map_df(~as_tibble(modify_if(., ~length(.x) > 1, list)))
@@ -45,7 +45,7 @@ sq_get_transaction <- function(location,
 #' #' Lists transactions for a particular location.
 #' #' 
 #' #' @importFrom dplyr as_tibble
-#' #' @importFrom httr parse_url build_url GET content
+#' #' @importFrom httr content add_headers
 #' #' @template location
 #' #' @template verbose
 #' #' @return \code{tbl_df} of transactions

@@ -6,6 +6,11 @@
 \usage{
 VERB_n(VERB, n = 5)
 }
+\arguments{
+\item{VERB}{function; an HTTP verb (e.g. GET, POST, etc.)}
+
+\item{n}{integer; the number of retries}
+}
 \description{
 Generic implementation of HTTP methods with retries and authentication
 }

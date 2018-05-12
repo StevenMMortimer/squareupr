@@ -4,7 +4,7 @@
 \alias{rDELETE}
 \title{DELETEs with retries and authentication}
 \usage{
-rDELETE(url, headers = character(0), ...)
+rDELETE(...)
 }
 \description{
 DELETEs with retries and authentication

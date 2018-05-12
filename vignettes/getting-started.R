@@ -25,6 +25,3 @@ suppressMessages(sq_auth(token = token_path, verbose = FALSE))
 #  
 #  sq_auth()
 
-## ------------------------------------------------------------------------
-# nothing yet!
-

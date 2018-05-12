@@ -4,7 +4,7 @@
 #' 
 #' @importFrom dplyr as_tibble 
 #' @importFrom purrr modify_if map_df
-#' @importFrom httr parse_url build_url GET content
+#' @importFrom httr GET content add_headers
 #' @template verbose
 #' @return \code{tbl_df} of locations
 #' @details Most other Connect API endpoints have a required location_id path parameter. 
@@ -22,8 +22,8 @@ sq_list_locations <- function(verbose = FALSE){
   
   if(verbose) message(httr_url)
   
-  httr_response <- GET(httr_url, add_headers(Authorization = sprintf("Bearer %s", sq_token()), 
-                                             Accept = "application/json"))
+  httr_response <- rGET(httr_url, add_headers(Authorization = sprintf("Bearer %s", sq_token()), 
+                                              Accept = "application/json"))
   response_parsed <- content(httr_response, "parsed")
   resultset <- response_parsed$locations %>%
     map_df(~as_tibble(modify_if(., ~length(.x) > 1, list)))

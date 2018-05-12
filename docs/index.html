@@ -107,7 +107,7 @@
 <p><br><img src="reference/figures/squareupr.png" width="120px" align="right"></p>
 <p><strong>squareupr</strong> is an R package that connects to Square APIs (Connect v1 &amp; v2).</p>
 <ul>
-<li>OAuth 2.0 (Single sign-on) and Personal Acces Token Authentication methods (<code><a href="reference/sq_auth.html">sq_auth()</a></code>)</li>
+<li>OAuth 2.0 (Single sign-on) and Personal Access Token Authentication methods (<code><a href="reference/sq_auth.html">sq_auth()</a></code>)</li>
 <li>v2 Locations Endpoint</li>
 <li>v2 Customers Endpoint</li>
 <li>v2 Transactions Endpoint</li>
@@ -123,6 +123,8 @@
 <a href="#usage">Usage</a>
 <ul>
 <li><a href="#authenticate">Authenticate</a></li>
+<li><a href="#locations">Locations</a></li>
+<li><a href="#customers">Customers</a></li>
 </ul>
 </li>
 <li><a href="#credits">Credits</a></li>
@@ -145,10 +147,14 @@ devtools<span class="op">::</span><span class="kw"><a href="http://www.rdocument
 <a href="#authenticate" class="anchor"></a>Authenticate</h3>
 <p>First, load the <strong>squareupr</strong> package and login. There are two ways to authenticate:</p>
 <ol style="list-style-type: decimal">
-<li>OAuth 2.0</li>
 <li>Personal Access Token</li>
+<li>OAuth 2.0</li>
 </ol>
-<p>It is recommended to use OAuth 2.0 so that passwords do not have to be shared or embedded within scripts. User credentials will be stored in locally cached file entitled <code>".httr-oauth-squareupr"</code> in the current working directory.</p>
+<p>NOTE: It is recommended to use OAuth 2.0 so that passwords do not have to be shared or embedded within scripts. However, to use OAuth 2.0 authentication it is necessary that you setup your own Connected App in the Square dashboard. An app id and app secret will be provided, then you will be able to plug into your script like so:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">options</span>(<span class="dt">squareupr.app_id =</span> <span class="st">"sq0-99-thisisatest99connected33app22id"</span>)
+<span class="kw">options</span>(<span class="dt">squareupr.app_secret =</span> <span class="st">"sq0-Th1s1sMyAppS3cr3t"</span>)
+<span class="kw"><a href="reference/sq_auth.html">sq_auth</a></span>()</code></pre></div>
+<p>OAuth 2.0 credentials will be cached locally in a file entitled <code>".httr-oauth-squareupr"</code> in the current working directory so that a new token is not needed each session.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">suppressWarnings</span>(<span class="kw">suppressMessages</span>(<span class="kw">library</span>(dplyr)))
 <span class="kw">library</span>(squareupr)
 
@@ -157,8 +163,81 @@ devtools<span class="op">::</span><span class="kw"><a href="http://www.rdocument
 
 <span class="co"># Using Personal Access Token (PAT)</span>
 <span class="kw"><a href="reference/sq_auth.html">sq_auth</a></span>(<span class="dt">personal_access_token =</span> <span class="st">"{PERSONAL_ACCESS_TOKEN_HERE}"</span>)</code></pre></div>
-<p>After logging in with <code><a href="reference/sq_auth.html">sq_auth()</a></code>, you can check your connectivity by looking at the information returned about the current user. It should be information about you!</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># nothing yet!</span></code></pre></div>
+</div>
+<div id="locations" class="section level3">
+<h3 class="hasAnchor">
+<a href="#locations" class="anchor"></a>Locations</h3>
+<p>You can pull information regarding locations for a specific location or listing all locations.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># list all locations</span>
+our_locations &lt;-<span class="st"> </span><span class="kw"><a href="reference/sq_list_locations.html">sq_list_locations</a></span>()
+our_locations<span class="op">$</span>name &lt;-<span class="st"> "{HIDDEN}"</span>
+our_locations <span class="op">%&gt;%</span><span class="st"> </span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/select.html">select</a></span>(id, name, address, timezone, 
+                        capabilities, status, created_at)
+<span class="co">#&gt; # A tibble: 5 x 7</span>
+<span class="co">#&gt;   id            name     address  timezone  capabilities status created_at</span>
+<span class="co">#&gt;   &lt;chr&gt;         &lt;chr&gt;    &lt;list&gt;   &lt;chr&gt;     &lt;list&gt;       &lt;chr&gt;  &lt;chr&gt;     </span>
+<span class="co">#&gt; 1 46FYN9N9RQS54 {HIDDEN} &lt;list [… America/… &lt;chr [1]&gt;    ACTIVE 2017-04-2…</span>
+<span class="co">#&gt; 2 DRDCJ2X8E2PMV {HIDDEN} &lt;list [… America/… &lt;chr [1]&gt;    ACTIVE 2016-09-2…</span>
+<span class="co">#&gt; 3 8T1TYXE840S00 {HIDDEN} &lt;list [… America/… &lt;chr [1]&gt;    ACTIVE 2016-09-2…</span>
+<span class="co">#&gt; 4 1AWPRVVVFWGQF {HIDDEN} &lt;list [… America/… &lt;chr [1]&gt;    ACTIVE 2017-04-1…</span>
+<span class="co">#&gt; 5 50X1GNAWEC8V0 {HIDDEN} &lt;list [… America/… &lt;chr [1]&gt;    ACTIVE 2017-03-0…</span>
+
+<span class="co"># search by id</span>
+one_location &lt;-<span class="st"> </span><span class="kw"><a href="reference/sq_get_location.html">sq_get_location</a></span>(our_locations<span class="op">$</span>id[<span class="dv">1</span>])
+this_location_name &lt;-<span class="st"> </span>one_location<span class="op">$</span>name[<span class="dv">1</span>]
+one_location<span class="op">$</span>name &lt;-<span class="st"> "{HIDDEN}"</span>
+one_location <span class="op">%&gt;%</span><span class="st"> </span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/select.html">select</a></span>(id, name, address, timezone, 
+                        capabilities, status, created_at)
+<span class="co">#&gt; # A tibble: 1 x 7</span>
+<span class="co">#&gt;   id            name     address  timezone  capabilities status created_at</span>
+<span class="co">#&gt;   &lt;chr&gt;         &lt;chr&gt;    &lt;list&gt;   &lt;chr&gt;     &lt;list&gt;       &lt;chr&gt;  &lt;chr&gt;     </span>
+<span class="co">#&gt; 1 46FYN9N9RQS54 {HIDDEN} &lt;list [… America/… &lt;chr [1]&gt;    ACTIVE 2017-04-2…</span>
+
+<span class="co"># search by name (must be an exact match)</span>
+one_location &lt;-<span class="st"> </span><span class="kw"><a href="reference/sq_get_location.html">sq_get_location</a></span>(this_location_name)
+one_location<span class="op">$</span>name &lt;-<span class="st"> "{HIDDEN}"</span>
+one_location <span class="op">%&gt;%</span><span class="st"> </span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/select.html">select</a></span>(id, name, address, timezone, 
+                        capabilities, status, created_at)
+<span class="co">#&gt; # A tibble: 1 x 7</span>
+<span class="co">#&gt;   id            name     address  timezone  capabilities status created_at</span>
+<span class="co">#&gt;   &lt;chr&gt;         &lt;chr&gt;    &lt;list&gt;   &lt;chr&gt;     &lt;list&gt;       &lt;chr&gt;  &lt;chr&gt;     </span>
+<span class="co">#&gt; 1 46FYN9N9RQS54 {HIDDEN} &lt;list [… America/… &lt;chr [1]&gt;    ACTIVE 2017-04-2…</span></code></pre></div>
+</div>
+<div id="customers" class="section level3">
+<h3 class="hasAnchor">
+<a href="#customers" class="anchor"></a>Customers</h3>
+<p>Similarly, you can pull information regarding a specific customer or listing all customers.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># list all locations</span>
+our_customers &lt;-<span class="st"> </span><span class="kw"><a href="reference/sq_list_customers.html">sq_list_customers</a></span>()
+our_customers<span class="op">$</span>given_name &lt;-<span class="st"> "{HIDDEN}"</span>
+our_customers<span class="op">$</span>family_name &lt;-<span class="st"> "{HIDDEN}"</span>
+our_customers <span class="op">%&gt;%</span><span class="st"> </span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/select.html">select</a></span>(id, created_at, updated_at, 
+                         given_name, family_name, preferences, groups)
+<span class="co">#&gt; # A tibble: 100 x 7</span>
+<span class="co">#&gt;    id     created_at  updated_at given_name family_name preferences groups</span>
+<span class="co">#&gt;    &lt;chr&gt;  &lt;chr&gt;       &lt;chr&gt;      &lt;chr&gt;      &lt;chr&gt;       &lt;list&gt;      &lt;list&gt;</span>
+<span class="co">#&gt;  1 M1RBD… 2017-01-09… 2018-02-0… {HIDDEN}   {HIDDEN}    &lt;lgl [1]&gt;   &lt;list…</span>
+<span class="co">#&gt;  2 56EB9… 2017-12-11… 2018-02-0… {HIDDEN}   {HIDDEN}    &lt;lgl [1]&gt;   &lt;NULL&gt;</span>
+<span class="co">#&gt;  3 Z2HYX… 2017-12-19… 2018-02-0… {HIDDEN}   {HIDDEN}    &lt;lgl [1]&gt;   &lt;NULL&gt;</span>
+<span class="co">#&gt;  4 017CX… 2017-10-04… 2018-02-0… {HIDDEN}   {HIDDEN}    &lt;lgl [1]&gt;   &lt;NULL&gt;</span>
+<span class="co">#&gt;  5 58MK9… 2017-11-16… 2018-02-0… {HIDDEN}   {HIDDEN}    &lt;lgl [1]&gt;   &lt;list…</span>
+<span class="co">#&gt;  6 T5HXZ… 2018-01-02… 2018-02-0… {HIDDEN}   {HIDDEN}    &lt;lgl [1]&gt;   &lt;NULL&gt;</span>
+<span class="co">#&gt;  7 MBSJA… 2017-05-31… 2017-05-3… {HIDDEN}   {HIDDEN}    &lt;lgl [1]&gt;   &lt;list…</span>
+<span class="co">#&gt;  8 ECVG5… 2017-09-30… 2018-03-1… {HIDDEN}   {HIDDEN}    &lt;lgl [1]&gt;   &lt;list…</span>
+<span class="co">#&gt;  9 H8BZA… 2017-07-06… 2018-02-1… {HIDDEN}   {HIDDEN}    &lt;lgl [1]&gt;   &lt;list…</span>
+<span class="co">#&gt; 10 ZCBZJ… 2018-01-16… 2018-03-0… {HIDDEN}   {HIDDEN}    &lt;lgl [1]&gt;   &lt;list…</span>
+<span class="co">#&gt; # ... with 90 more rows</span>
+
+<span class="co"># search by id</span>
+one_customer &lt;-<span class="st"> </span><span class="kw"><a href="reference/sq_get_customer.html">sq_get_customer</a></span>(our_customers<span class="op">$</span>id[<span class="dv">1</span>])
+one_customer<span class="op">$</span>given_name &lt;-<span class="st"> "{HIDDEN}"</span>
+one_customer<span class="op">$</span>family_name &lt;-<span class="st"> "{HIDDEN}"</span>
+one_customer <span class="op">%&gt;%</span><span class="st"> </span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/select.html">select</a></span>(id, created_at, updated_at, 
+                        given_name, family_name, preferences, groups)
+<span class="co">#&gt; # A tibble: 1 x 7</span>
+<span class="co">#&gt;   id      created_at  updated_at given_name family_name preferences groups</span>
+<span class="co">#&gt;   &lt;chr&gt;   &lt;chr&gt;       &lt;chr&gt;      &lt;chr&gt;      &lt;chr&gt;       &lt;list&gt;      &lt;list&gt;</span>
+<span class="co">#&gt; 1 M1RBDF… 2017-01-09… 2018-02-0… {HIDDEN}   {HIDDEN}    &lt;lgl [1]&gt;   &lt;list…</span></code></pre></div>
 </div>
 </div>
 <div id="credits" class="section level2">

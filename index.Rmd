@@ -22,7 +22,7 @@ knitr::opts_chunk$set(
 
 **squareupr** is an R package that connects to Square APIs (Connect v1 & v2).
 
-  * OAuth 2.0 (Single sign-on) and Personal Acces Token Authentication methods (`sq_auth()`)
+  * OAuth 2.0 (Single sign-on) and Personal Access Token Authentication methods (`sq_auth()`)
   * v2 Locations Endpoint
   * v2 Customers Endpoint
   * v2 Transactions Endpoint
@@ -33,6 +33,8 @@ knitr::opts_chunk$set(
   * [Installation](#installation)
   * [Usage](#usage)
     * [Authenticate](#authenticate)
+    * [Locations](#locations)
+    * [Customers](#customers)
   * [Credits](#credits)
   * [More Information](#more-information)
 
@@ -52,19 +54,28 @@ If you encounter a clear bug, please file a minimal reproducible example on
 ### Authenticate
 First, load the **squareupr** package and login. There are two ways to authenticate:  
 
-  1. OAuth 2.0
-  2. Personal Access Token
+  1. Personal Access Token
+  2. OAuth 2.0
 
-It is recommended to use OAuth 2.0 so that passwords do not have to be shared or 
-embedded within scripts. User credentials will be stored in locally cached file 
-entitled `".httr-oauth-squareupr"` in the current working directory.
+NOTE: It is recommended to use OAuth 2.0 so that passwords do not have to be shared or 
+embedded within scripts. However, to use OAuth 2.0 authentication it is necessary 
+that you setup your own Connected App in the Square dashboard. An app id and app 
+secret will be provided, then you will be able to plug into your script like so:
 
-```{r auth, include = FALSE, eval=FALSE}
+```{r other-params, eval=FALSE}
+options(squareupr.app_id = "sq0-99-thisisatest99connected33app22id")
+options(squareupr.app_secret = "sq0-Th1s1sMyAppS3cr3t")
+sq_auth()
+```
+
+OAuth 2.0 credentials will be cached locally in a file entitled `".httr-oauth-squareupr"` 
+in the current working directory so that a new token is not needed each session.
+
+```{r auth, include = FALSE}
 suppressWarnings(suppressMessages(library(dplyr)))
-suppressWarnings(suppressMessages(library(here)))
 library(squareupr)
-settings_path <- here::here("tests", "testthat", "squareupr_test_settings.rds")
-suppressMessages(sq_auth(personal_access_token = settings_path$personal_access_token, 
+settings <- readRDS(here::here("tests", "testthat", "squareupr_test_settings.rds"))
+suppressMessages(sq_auth(personal_access_token = settings$personal_access_token, 
                          verbose = FALSE))
 ```
 
@@ -79,11 +90,49 @@ sq_auth()
 sq_auth(personal_access_token = "{PERSONAL_ACCESS_TOKEN_HERE}")
 ```
 
-After logging in with `sq_auth()`, you can check your connectivity by looking at 
-the information returned about the current user. It should be information about you!
+### Locations
+You can pull information regarding locations for a specific location or listing 
+all locations.
 
-```{r}
-# nothing yet!
+```{r locations}
+# list all locations
+our_locations <- sq_list_locations()
+our_locations$name <- "{HIDDEN}"
+our_locations %>% select(id, name, address, timezone, 
+                        capabilities, status, created_at)
+
+# search by id
+one_location <- sq_get_location(our_locations$id[1])
+this_location_name <- one_location$name[1]
+one_location$name <- "{HIDDEN}"
+one_location %>% select(id, name, address, timezone, 
+                        capabilities, status, created_at)
+
+# search by name (must be an exact match)
+one_location <- sq_get_location(this_location_name)
+one_location$name <- "{HIDDEN}"
+one_location %>% select(id, name, address, timezone, 
+                        capabilities, status, created_at)
+```
+
+### Customers
+Similarly, you can pull information regarding a specific customer or listing 
+all customers.
+
+```{r customers}
+# list all locations
+our_customers <- sq_list_customers()
+our_customers$given_name <- "{HIDDEN}"
+our_customers$family_name <- "{HIDDEN}"
+our_customers %>% select(id, created_at, updated_at, 
+                         given_name, family_name, preferences, groups)
+
+# search by id
+one_customer <- sq_get_customer(our_customers$id[1])
+one_customer$given_name <- "{HIDDEN}"
+one_customer$family_name <- "{HIDDEN}"
+one_customer %>% select(id, created_at, updated_at, 
+                        given_name, family_name, preferences, groups)
 ```
 
 ## Credits
