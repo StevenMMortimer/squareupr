@@ -19,5 +19,4 @@
 # store state variables in the '.state' internal environment (created in auth.R)
 .state$auth_method <- NULL
 .state$token <- NULL
-.state$session_id <- NULL
-.state$instance_url <- NULL
+.state$personal_access_token <- NULL
