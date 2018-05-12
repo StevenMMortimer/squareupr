@@ -2,7 +2,6 @@
   
   op <- options()
   op.squareupr <- list(
-    squareupr.personal_access_token = NULL,
     squareupr.api_base_url = "https://connect.squareup.com",
     squareupr.app_id = NULL,
     squareupr.app_secret = NULL,

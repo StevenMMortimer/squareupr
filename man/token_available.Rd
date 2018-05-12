@@ -10,7 +10,7 @@ token_available(verbose = TRUE)
 logical
 }
 \description{
-Check if a token is available in \code{\link{salesforcer}}'s internal
+Check if a token is available in \code{\link{squareupr}}'s internal
 \code{.state} environment.
 }
 \note{

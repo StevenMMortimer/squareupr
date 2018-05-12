@@ -2,7 +2,8 @@
 #' 
 #' Retrieves details for a single transaction.
 #' 
-#' @importFrom dplyr as_tibble modify_if
+#' @importFrom dplyr as_tibble 
+#' @importFrom purrr modify_if
 #' @importFrom httr parse_url build_url GET content
 #' @template location
 #' @template transaction_id

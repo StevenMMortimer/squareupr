@@ -2,9 +2,9 @@
 #' 
 #' Returns details for a single customer.
 #' 
-#' @importFrom dplyr as_tibble modify_if
+#' @importFrom dplyr as_tibble 
+#' @importFrom purrr modify_if map_df
 #' @importFrom httr parse_url build_url GET content
-#' @importFrom purrr map_df
 #' @template customer_id
 #' @template verbose
 #' @return \code{tbl_df} of a single customer
@@ -36,9 +36,9 @@ sq_get_customer <- function(customer_id,
 #' 
 #' Lists a business's customers.
 #' 
-#' @importFrom dplyr as_tibble modify_if
+#' @importFrom dplyr as_tibble 
+#' @importFrom purrr modify_if map_df
 #' @importFrom httr parse_url build_url GET content
-#' @importFrom purrr map_df
 #' @template verbose
 #' @return \code{tbl_df} of customers
 #' @details Required permissions: \code{CUSTOMERS_READ}

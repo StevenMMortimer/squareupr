@@ -59,37 +59,31 @@ It is recommended to use OAuth 2.0 so that passwords do not have to be shared or
 embedded within scripts. User credentials will be stored in locally cached file 
 entitled `".httr-oauth-squareupr"` in the current working directory.
 
-```{r auth, include = FALSE}
+```{r auth, include = FALSE, eval=FALSE}
 suppressWarnings(suppressMessages(library(dplyr)))
-suppressWarnings(suppressMessages(library(purrr)))
 suppressWarnings(suppressMessages(library(here)))
 library(squareupr)
-token_path <- here::here("tests", "testthat", "squareupr_token.rds")
-suppressMessages(sq_auth(token = token_path, verbose = FALSE))
+settings_path <- here::here("tests", "testthat", "squareupr_test_settings.rds")
+suppressMessages(sq_auth(personal_access_token = settings_path$personal_access_token, 
+                         verbose = FALSE))
 ```
 
 ```{r, eval=FALSE}
 suppressWarnings(suppressMessages(library(dplyr)))
-suppressWarnings(suppressMessages(library(purrr)))
 library(squareupr)
 
 # Using OAuth 2.0 authentication
 sq_auth()
 
-# Using Basic Username-Password authentication
+# Using Personal Access Token (PAT)
 sq_auth(personal_access_token = "{PERSONAL_ACCESS_TOKEN_HERE}")
 ```
 
-After logging in with `sf_auth()`, you can check your connectivity by looking at 
+After logging in with `sq_auth()`, you can check your connectivity by looking at 
 the information returned about the current user. It should be information about you!
 
 ```{r}
-# pull down information of person logged in
-# it's a simple easy call to get started 
-# and confirm a connection to the APIs
-user_info <- sf_user_info()
-sprintf("User Id: %s", user_info$id)
-sprintf("User Active?: %s", user_info$isActive)
+# nothing yet!
 ```
 
 ## Credits

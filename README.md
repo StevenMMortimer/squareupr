@@ -57,7 +57,7 @@ sq_auth()
 sq_auth(personal_access_token = "{PERSONAL_ACCESS_TOKEN_HERE}")
 ```
 
-After logging in with `sf_auth()`, you can check your connectivity by looking at the information returned about the current user. It should be information about you!
+After logging in with `sq_auth()`, you can check your connectivity by looking at the information returned about the current user. It should be information about you!
 
 ``` r
 # nothing yet!

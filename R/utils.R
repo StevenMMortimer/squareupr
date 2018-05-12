@@ -7,16 +7,6 @@ squareupr_state <- function(){
   .state
 }
 
-#' Write a CSV file in format acceptable to Square APIs
-#' 
-#' @importFrom readr write_csv
-#' @note This function is meant to be used internally. Only use when debugging.
-#' @keywords internal
-#' @export
-sq_write_csv <- function(x, path){
-  write_csv(x=x, path=path, na="#N/A")
-}
-
 #' Determine the host operating system
 #' 
 #' This function determines whether the system running the R code

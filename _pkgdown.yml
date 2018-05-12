@@ -46,4 +46,3 @@ reference:
     desc: Functions used for retrieving transaction details.
     contents:
       - '`sq_get_transaction`'
-      - '`sq_list_transactions`'

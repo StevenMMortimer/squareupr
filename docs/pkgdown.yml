@@ -1,0 +1,9 @@
+pandoc: 1.19.2.1
+pkgdown: 0.1.0.9000
+pkgdown_sha: 21b9e469e4bd7f443bf0bbf194d47760c174463e
+articles:
+  getting-started: getting-started.html
+urls:
+  reference: https://stevenmmortimer.github.io/squareupr/reference
+  article: https://stevenmmortimer.github.io/squareupr/articles
+

@@ -2,9 +2,9 @@
 #' 
 #' Provides the details for all of a business's locations.
 #' 
-#' @importFrom dplyr as_tibble modify_if
+#' @importFrom dplyr as_tibble 
+#' @importFrom purrr modify_if map_df
 #' @importFrom httr parse_url build_url GET content
-#' @importFrom purrr map_df
 #' @template verbose
 #' @return \code{tbl_df} of locations
 #' @details Most other Connect API endpoints have a required location_id path parameter. 
