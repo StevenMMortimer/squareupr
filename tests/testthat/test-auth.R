@@ -1,7 +1,5 @@
 context("Authorization")
 
-skip("Dont Test Right Now")
-
 test_that("testing missing auth", {
   expect_false(token_available())
   expect_null(sq_access_token())
@@ -14,8 +12,8 @@ test_that("testing nonsense inputs", {
   expect_error(sq_auth(token = letters[1:3]))
 })
 
-#squareupr_test_settings <- readRDS("squareupr_test_settings.rds")
-#squareupr_token <- readRDS("squareupr_token.rds")
+squareupr_test_settings <- readRDS("squareupr_test_settings.rds")
+squareupr_token <- readRDS("squareupr_token.rds")
 
 test_that("testing OAuth passing token as filename", {
   sq_auth(token = "squareupr_token.rds")
@@ -42,7 +40,7 @@ test_that("testing PAT auth", {
   expect_named(auth, c("auth_method", "token", "personal_access_token"))
 })
 
-test_that("testing token and session availability after PAT auth", {
+test_that("testing token availability after PAT auth", {
   expect_true(personal_access_token_available())
   expect_true(!is.null(sq_personal_access_token()))
 })

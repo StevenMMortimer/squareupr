@@ -1,9 +1,7 @@
 context("v2 locations endpoint")
 
-skip("Dont Test Right Now")
-
-#squareupr_test_settings <- readRDS("squareupr_test_settings.rds")
-#options(squareupr.personal_access_token = squareupr_test_settings$personal_access_token)
+squareupr_test_settings <- readRDS("squareupr_test_settings.rds")
+sq_auth(squareupr_test_settings$personal_access_token)
 
 test_that("sq_list_locations", {
   
