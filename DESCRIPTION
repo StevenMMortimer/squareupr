@@ -1,0 +1,36 @@
+Package: squareupr
+Title: An Implementation of 'Square' APIs
+Version: 0.0.0.9000
+Date: 2018-05-10
+Description: An implementation of the 'Square' Platform APIs (Connect v1, Connect v2) 
+    <https://docs.connect.squareup.com/api/connect/v2>. 
+    This package is an articulation of the most API methods into R. The API calls 
+    return JSON that is parsed tidy data structures. Please refer to the 'Square' 
+    API documentation along with this package's website 
+    <https://stevenmmortimer.github.io/squareupr/> for more information, 
+    documentation, and examples.
+Authors@R: c(
+    person(c("Steven", "M."), "Mortimer", , "reportmort@gmail.com", c("aut", "cre")),
+    person("Jennifer", "Bryan", , "jenny@rstudio.com", c("ctb")),
+    person("Joanna", "Zhao", , "joanna.zhao@alumni.ubc.ca", c("ctb"))
+    )
+URL: https://github.com/StevenMMortimer/squareupr
+BugReports: https://github.com/StevenMMortimer/squareupr/issues
+Encoding: UTF-8
+Depends:
+    R (>= 3.1.0)
+License: MIT + file LICENSE
+LazyData: true
+Imports:
+    httr,
+    dplyr,
+    jsonlite,
+    purrr,
+    lubridate
+Suggests:
+    knitr,
+    testthat,
+    rmarkdown,
+    here,
+VignetteBuilder: knitr
+RoxygenNote: 6.0.1

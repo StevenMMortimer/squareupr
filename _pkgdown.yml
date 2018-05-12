@@ -1,0 +1,49 @@
+title: squareupr
+url: https://stevenmmortimer.github.io/squareupr
+template:
+  params:
+    bootswatch: spacelab
+    ganalytics: UA-98603021-2
+
+home:
+  strip_header: true
+  
+navbar:
+  type: default
+  left:
+    - text: "Articles"
+      icon: fas fa-book
+      menu: 
+      -  text: Getting Started
+         href: articles/getting-started.html
+    - text: Reference
+      icon: fa-file-code-o
+      href: reference/index.html
+    - text: News
+      icon: fa-newspaper-o
+      href: news/index.html
+  right:
+    - text: GitHub
+      icon: fa-github fa-lg
+      href: https://github.com/StevenMMortimer/squareupr
+      
+reference:
+  - title: Authentication
+    desc: Functions used for authenticating
+    contents:
+      - '`sq_auth`'
+  - title: Locations Endpoint
+    desc: Functions used for retrieving location details.
+    contents:
+      - '`sq_get_location`'
+      - '`sq_list_locations`'
+  - title: Customers Endpoint
+    desc: Functions used for creating, retrieving, updating, and deleting customers.
+    contents:
+      - '`sq_get_customer`'
+      - '`sq_list_customers`'
+  - title: Transactions Endpoint
+    desc: Functions used for retrieving transaction details.
+    contents:
+      - '`sq_get_transaction`'
+      - '`sq_list_transactions`'
