@@ -24,7 +24,6 @@ LazyData: true
 Imports:
     httr,
     dplyr,
-    jsonlite,
     purrr,
     lubridate
 Suggests:

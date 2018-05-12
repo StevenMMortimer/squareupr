@@ -49,9 +49,9 @@ sq_list_locations <- function(verbose = FALSE){
 #' this_location2 <- sq_get_location(location = "My Store Name")
 #' }
 #' @export
-sq_get_location <- function(location){
+sq_get_location <- function(location, verbose=FALSE){
   
-  valid_locations <- sq_list_locations()
+  valid_locations <- sq_list_locations(verbose=verbose)
   
   if(location %in% valid_locations$id){
     result <- valid_locations[valid_locations$id == location,]

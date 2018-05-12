@@ -4,14 +4,14 @@ squareupr<img src="man/figures/squareupr.png" width="120px" align="right" />
 
 [![Build Status](https://travis-ci.org/StevenMMortimer/squareupr.svg?branch=master)](https://travis-ci.org/StevenMMortimer/squareupr) [![AppVeyor Build Status](https://ci.appveyor.com/api/projects/status/github/StevenMMortimer/squareupr?branch=master&svg=true)](https://ci.appveyor.com/project/StevenMMortimer/squareupr) [![CRAN\_Status\_Badge](http://www.r-pkg.org/badges/version/squareupr)](http://cran.r-project.org/package=squareupr) [![Coverage Status](https://codecov.io/gh/StevenMMortimer/squareupr/branch/master/graph/badge.svg)](https://codecov.io/gh/StevenMMortimer/squareupr?branch=master)
 
-**squareupr** is an R package that connects to Square APIs (Connect v1 & v2).
+**squareupr** is an R package that connects to the Square APIs (Connect v1 & v2).
 
 -   OAuth 2.0 (Single sign-on) and Personal Access Token Authentication methods (`sq_auth()`)
--   v2 Locations Endpoint
--   v2 Customers Endpoint
--   v2 Transactions Endpoint
--   v1 Payments Endpoint
--   v1 Orders Endpoint
+-   v2 Locations Endpoint (`sq_list_locations()`, `sq_get_location()`)
+-   v2 Customers Endpoint (`sq_list_customers()`, `sq_get_customer()`)
+-   v2 Transactions Endpoint - TODO (`sq_list_transactions()`, `sq_get_transaction()`)
+-   v1 Payments Endpoint - TODO
+-   v1 Orders Endpoint - TODO
 
 Table of Contents
 -----------------
@@ -45,7 +45,7 @@ First, load the **squareupr** package and login. There are two ways to authentic
 1.  Personal Access Token
 2.  OAuth 2.0
 
-NOTE: It is recommended to use OAuth 2.0 so that passwords do not have to be shared or embedded within scripts. However, to use OAuth 2.0 authentication it is necessary that you setup your own Connected App in the Square dashboard. An app id and app secret will be provided, then you will be able to plug into your script like so:
+NOTE: Before using OAuth 2.0 authentication it is necessary that you setup your own Connected App in the Square dashboard. An App ID and App Secret will be provided, then you will be able to plug into your script like so:
 
 ``` r
 options(squareupr.app_id = "sq0-99-thisisatest99connected33app22id")

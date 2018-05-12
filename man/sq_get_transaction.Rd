@@ -11,7 +11,7 @@ sq_get_transaction(location, transaction_id, verbose = FALSE)
 This must be an exact match to the ID or name as found using \link{sq_list_locations}.}
 
 \item{transaction_id}{character; the Square ID assigned to each unique transaction. 
-This can be found using \link{sq_list_transactions}}
+This can be found using ...}
 
 \item{verbose}{logical; do you want informative messages?}
 }

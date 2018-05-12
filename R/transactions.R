@@ -25,7 +25,7 @@ sq_get_transaction <- function(location,
   
   httr_url <- sprintf("%s/v2/locations/%s/transactions/%s", 
                       getOption("squareupr.api_base_url"),
-                      location_id, 
+                      this_location$id[1], 
                       transaction_id)
   
   if(verbose) message(httr_url)

@@ -4,7 +4,7 @@
 \alias{sq_get_location}
 \title{Get Location}
 \usage{
-sq_get_location(location)
+sq_get_location(location, verbose = FALSE)
 }
 \arguments{
 \item{location}{character; the Square ID or name associated to a location. 
