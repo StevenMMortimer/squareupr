@@ -110,36 +110,3 @@ cpf <- function(...) cat(paste0(sprintf(...), "\n"))
 mpf <- function(...) message(sprintf(...))
 wpf <- function(...) warning(sprintf(...), call. = FALSE)
 spf <- function(...) stop(sprintf(...), call. = FALSE)
-
-#' Function to catch and print HTTP errors
-#'
-#' @importFrom httr content http_error
-#' @importFrom xml2 as_list xml_find_first
-#' @note This function is meant to be used internally. Only use when debugging.
-#' @keywords internal
-#' @export
-catch_errors <- function(x){
-  if(http_error(x)){
-    response_parsed <- content(x, encoding='UTF-8')
-    # convert to list if xml content type
-    content_type <- x$headers$`content-type`
-    if(grepl('xml', content_type)){
-      response_parsed <- as_list(response_parsed)
-    }
-    if(status_code(x) < 500){
-      if(!is.null(response_parsed$exceptionCode)){
-        stop(sprintf("%s: %s", response_parsed$exceptionCode, response_parsed$exceptionMessage))
-      } else if(!is.null(response_parsed$error$exceptionCode)){
-        stop(sprintf("%s: %s", response_parsed$error$exceptionCode, response_parsed$error$exceptionMessage))
-      } else if(!is.null(response_parsed[[1]]$Error$errorCode[[1]])){
-        stop(sprintf("%s: %s", response_parsed[[1]]$Error$errorCode[[1]], response_parsed[[1]]$Error$message[[1]]))
-      }  else {
-        stop(sprintf("%s: %s", response_parsed[[1]]$errorCode, response_parsed[[1]]$message))  
-      }
-    } else {
-      error_message <- response_parsed$Envelope$Body$Fault
-      stop(error_message$faultstring[[1]][1])
-    }
-  }
-  invisible(FALSE)
-}
