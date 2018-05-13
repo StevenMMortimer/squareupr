@@ -50,3 +50,16 @@ reference:
     contents:
       - '`sq_get_transaction`'
       - '`sq_list_transactions`'
+  - title: Payments Endpoint
+    desc: Functions used for retrieving payment details.
+    contents:
+      - '`sq_get_payment`'
+      - '`sq_list_payments`'
+  - title: Items Endpoint
+    desc: Functions used for creating, retrieving, updating, and deleting items.
+    contents:
+      - '`sq_get_item`'
+      - '`sq_list_items`'
+      - '`sq_create_item`'
+      - '`sq_delete_item`'
+      - '`sq_update_item`'

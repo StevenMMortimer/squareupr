@@ -97,13 +97,29 @@ mpf <- function(...) message(sprintf(...))
 wpf <- function(...) warning(sprintf(...), call. = FALSE)
 spf <- function(...) stop(sprintf(...), call. = FALSE)
 
-#' Catches httr errors and prints them nicely
+#' Catches Connect v1 httr errors and prints them nicely
 #' 
 #' @importFrom httr http_error content
 #' @note This function is meant to be used internally. Only use when debugging.
 #' @keywords internal
 #' @export
-catch_errors <- function(httr_response){
+catch_errors_connect_v1 <- function(httr_response){
+  if(http_error(httr_response)){
+    response_parsed <- content(httr_response, "parsed")
+    stop(sprintf("%s - %s", 
+                 response_parsed$type,
+                 response_parsed$message) , call. = FALSE)
+  }
+  return(invisible(FALSE))
+}
+
+#' Catches Connect v2 httr errors and prints them nicely
+#' 
+#' @importFrom httr http_error content
+#' @note This function is meant to be used internally. Only use when debugging.
+#' @keywords internal
+#' @export
+catch_errors_connect_v2 <- function(httr_response){
   if(http_error(httr_response)){
     response_parsed <- content(httr_response, "parsed")
     stop(sprintf("%s - %s", 

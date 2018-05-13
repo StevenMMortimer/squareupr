@@ -24,7 +24,7 @@ sq_list_locations <- function(verbose = FALSE){
   
   httr_response <- rGET(httr_url, add_headers(Authorization = sprintf("Bearer %s", sq_token()), 
                                               Accept = "application/json"))
-  catch_errors(httr_response)
+  catch_errors_connect_v2(httr_response)
   response_parsed <- content(httr_response, "parsed")
   resultset <- response_parsed$locations %>%
     map_df(~as_tibble(modify_if(., ~(length(.x) > 1 | is.list(.x)), list)))

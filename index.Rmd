@@ -24,10 +24,13 @@ knitr::opts_chunk$set(
 
   * OAuth 2.0 (Single sign-on) and Personal Access Token Authentication methods (`sq_auth()`)
   * v2 Locations Endpoint (`sq_list_locations()`, `sq_get_location()`)
-  * v2 Customers Endpoint (`sq_list_customers()`, `sq_get_customer()`)
+  * v2 Customers Endpoint - CRUD (Create, Retrieve, Update, Delete) methods for customers with: 
+    * `sq_list_customers()`, `sq_get_customer()`, `sq_create_customer()`, `sq_update_customer()`, `sq_delete_customer()` 
   * v2 Transactions Endpoint (`sq_list_transactions()`, `sq_get_transaction()`)
-  * v1 Payments Endpoint - TODO 
-  * v1 Orders Endpoint - TODO 
+  * v1 Payments Endpoint (`sq_list_payments()`, `sq_get_payment()`)
+  * v1 Items Endpoint - CRUD (Create, Retrieve, Update, Delete) methods for items with: 
+    * `sq_list_items()`, `sq_get_item()`, `sq_create_item()`, `sq_update_item()`, `sq_delete_item()` 
+  * v1 Orders Endpoint - TODO
 
 ## Table of Contents  
   * [Installation](#installation)
@@ -77,7 +80,7 @@ sq_auth(personal_access_token = "sq-Th1s1sMyPers0nalAcessT0ken")
 sq_auth()
 ```
 
-NOTE: Before using OAuth 2.0 authentication it is necessary that you setup your 
+NOTE: Before using OAuth 2.0 authentication it is necessary that you set up your 
 own Connected App in the Square dashboard. An App ID and App Secret will be 
 provided, then you will be able to plug into your script like so:
 

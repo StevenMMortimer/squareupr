@@ -25,7 +25,7 @@ sq_get_customer <- function(customer_id,
   
   httr_response <- rGET(httr_url, add_headers(Authorization = sprintf("Bearer %s", sq_token()), 
                                               Accept = "application/json"))
-  catch_errors(httr_response)
+  catch_errors_connect_v2(httr_response)
   response_parsed <- content(httr_response, "parsed")
   resultset <- response_parsed %>%
     map_df(~as_tibble(modify_if(., ~(length(.x) > 1 | is.list(.x)), list)))
@@ -64,7 +64,7 @@ sq_list_customers <- function(cursor = NULL,
   
   httr_response <- rGET(httr_url, add_headers(Authorization = sprintf("Bearer %s", sq_token()), 
                                               Accept = "application/json"))
-  catch_errors(httr_response)
+  catch_errors_connect_v2(httr_response)
   response_parsed <- content(httr_response, "parsed")
   resultset <- response_parsed$customers %>%
     map_df(~as_tibble(modify_if(., ~(length(.x) > 1 | is.list(.x)), list)))
@@ -129,7 +129,7 @@ sq_create_customer <- function(input_data,
                                     Accept = "application/json"), 
                         body = input_data, 
                         encode = "json")
-  catch_errors(httr_response)
+  catch_errors_connect_v2(httr_response)
   response_parsed <- content(httr_response, "parsed")
   resultset <- response_parsed %>%
     map_df(~as_tibble(modify_if(., ~(length(.x) > 1 | is.list(.x)), list)))
@@ -163,7 +163,7 @@ sq_delete_customer <- function(customer_id,
   
   httr_response <- rDELETE(httr_url, add_headers(Authorization = sprintf("Bearer %s", sq_token()), 
                                                  Accept = "application/json"))
-  catch_errors(httr_response)
+  catch_errors_connect_v2(httr_response)
   return(TRUE)
 }
 
@@ -204,7 +204,7 @@ sq_update_customer <- function(customer_id,
                                      Accept = "application/json"), 
                          body = input_data, 
                          encode = "json")
-  catch_errors(httr_response)
+  catch_errors_connect_v2(httr_response)
   response_parsed <- content(httr_response, "parsed")
   resultset <- response_parsed %>%
     map_df(~as_tibble(modify_if(., ~(length(.x) > 1 | is.list(.x)), list)))

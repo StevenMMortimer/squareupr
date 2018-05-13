@@ -4,7 +4,10 @@
     <loc>https://stevenmmortimer.github.io/squareupr/reference/VERB_n.html</loc>
   </url>
   <url>
-    <loc>https://stevenmmortimer.github.io/squareupr/reference/catch_errors.html</loc>
+    <loc>https://stevenmmortimer.github.io/squareupr/reference/catch_errors_connect_v1.html</loc>
+  </url>
+  <url>
+    <loc>https://stevenmmortimer.github.io/squareupr/reference/catch_errors_connect_v2.html</loc>
   </url>
   <url>
     <loc>https://stevenmmortimer.github.io/squareupr/reference/get_os.html</loc>
@@ -46,13 +49,25 @@
     <loc>https://stevenmmortimer.github.io/squareupr/reference/sq_create_customer.html</loc>
   </url>
   <url>
+    <loc>https://stevenmmortimer.github.io/squareupr/reference/sq_create_item.html</loc>
+  </url>
+  <url>
     <loc>https://stevenmmortimer.github.io/squareupr/reference/sq_delete_customer.html</loc>
+  </url>
+  <url>
+    <loc>https://stevenmmortimer.github.io/squareupr/reference/sq_delete_item.html</loc>
   </url>
   <url>
     <loc>https://stevenmmortimer.github.io/squareupr/reference/sq_get_customer.html</loc>
   </url>
   <url>
+    <loc>https://stevenmmortimer.github.io/squareupr/reference/sq_get_item.html</loc>
+  </url>
+  <url>
     <loc>https://stevenmmortimer.github.io/squareupr/reference/sq_get_location.html</loc>
+  </url>
+  <url>
+    <loc>https://stevenmmortimer.github.io/squareupr/reference/sq_get_payment.html</loc>
   </url>
   <url>
     <loc>https://stevenmmortimer.github.io/squareupr/reference/sq_get_transaction.html</loc>
@@ -61,7 +76,13 @@
     <loc>https://stevenmmortimer.github.io/squareupr/reference/sq_list_customers.html</loc>
   </url>
   <url>
+    <loc>https://stevenmmortimer.github.io/squareupr/reference/sq_list_items.html</loc>
+  </url>
+  <url>
     <loc>https://stevenmmortimer.github.io/squareupr/reference/sq_list_locations.html</loc>
+  </url>
+  <url>
+    <loc>https://stevenmmortimer.github.io/squareupr/reference/sq_list_payments.html</loc>
   </url>
   <url>
     <loc>https://stevenmmortimer.github.io/squareupr/reference/sq_list_transactions.html</loc>
@@ -74,6 +95,9 @@
   </url>
   <url>
     <loc>https://stevenmmortimer.github.io/squareupr/reference/sq_update_customer.html</loc>
+  </url>
+  <url>
+    <loc>https://stevenmmortimer.github.io/squareupr/reference/sq_update_item.html</loc>
   </url>
   <url>
     <loc>https://stevenmmortimer.github.io/squareupr/reference/squareupr.html</loc>
