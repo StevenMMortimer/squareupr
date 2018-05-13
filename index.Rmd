@@ -24,19 +24,17 @@ knitr::opts_chunk$set(
 
   * OAuth 2.0 (Single sign-on) and Personal Access Token Authentication methods (`sq_auth()`)
   * v2 Locations Endpoint (`sq_list_locations()`, `sq_get_location()`)
-  * v2 Customers Endpoint - CRUD (Create, Retrieve, Update, Delete) methods for customers with: 
-    * `sq_list_customers()`, `sq_get_customer()`, `sq_create_customer()`, `sq_update_customer()`, `sq_delete_customer()` 
   * v2 Transactions Endpoint (`sq_list_transactions()`, `sq_get_transaction()`)
+  * v2 Customers Endpoint - CRUD (Create, Retrieve, Update, Delete) methods for customers with: 
+    * `sq_list_customers()`, `sq_get_customer()`, `sq_create_customer()`, `sq_update_customer()`, `sq_delete_customer()`
   * v1 Payments Endpoint (`sq_list_payments()`, `sq_get_payment()`)
   * v1 Items Endpoint - CRUD (Create, Retrieve, Update, Delete) methods for items with: 
-    * `sq_list_items()`, `sq_get_item()`, `sq_create_item()`, `sq_update_item()`, `sq_delete_item()` 
-  * v1 Orders Endpoint - TODO
+    * `sq_list_items()`, `sq_get_item()`, `sq_create_item()`, `sq_update_item()`, `sq_delete_item()`
 
 ## Table of Contents  
   * [Installation](#installation)
   * [Usage](#usage)
     * [Authenticate](#authenticate)
-    * [Locations](#locations)
     * [Customers](#customers)
     * [Transactions](#transactions)
   * [Credits](#credits)
@@ -56,13 +54,13 @@ If you encounter a clear bug, please file a minimal reproducible example on
 ## Usage
 
 ### Authenticate
-First, load the **squareupr** package and login. There are two ways to authenticate:  
+First, load the **squareupr** package and authenticate. There are two ways to authenticate:  
 
   1. Personal Access Token
   2. OAuth 2.0
 
 ```{r auth, include = FALSE}
-suppressWarnings(suppressMessages(library(dplyr)))
+library(tidyverse)
 library(squareupr)
 settings <- readRDS(here::here("tests", "testthat", "squareupr_test_settings.rds"))
 suppressMessages(sq_auth(personal_access_token = settings$personal_access_token, 
@@ -70,7 +68,7 @@ suppressMessages(sq_auth(personal_access_token = settings$personal_access_token,
 ```
 
 ```{r, eval=FALSE}
-library(dplyr)
+library(tidyverse)
 library(squareupr)
 
 # Using Personal Access Token (PAT)
@@ -93,33 +91,26 @@ sq_auth()
 OAuth 2.0 credentials will be cached locally in a file entitled `".httr-oauth-squareupr"` 
 in the current working directory so that a new token is not needed each session.
 
-### Locations
-You can pull information regarding locations for a specific location or listing 
-all locations.
+### Transactions
+With the v2 Locations endpoint you can pull information regarding all locations.  
+One thing to note is that it is important to first pull down the location details for 
+your business because this is required when searching for transactions and items to analyze. 
+When listing transactions the timeframe defaults to the previous day using `Sys.Date() - 1`.
+The `tenders` field lists all methods of payment used to pay in the transaction.
 
-```{r locations}
+```{r transactions-by-location}
 # list all locations
 our_locations <- sq_list_locations()
-our_locations$name <- "{HIDDEN}"
-our_locations %>% select(id, name, address, timezone, 
-                        capabilities, status, created_at)
-
-# search by id
-one_location <- sq_get_location(our_locations$id[1])
-this_location_name <- one_location$name[1]
-one_location$name <- "{HIDDEN}"
-one_location %>% select(id, name, address, timezone, 
-                        capabilities, status, created_at)
-
-# search by name (must be an exact match)
-one_location <- sq_get_location(this_location_name)
-one_location$name <- "{HIDDEN}"
-one_location %>% select(id, name, address, timezone, 
-                        capabilities, status, created_at)
+our_transactions <- sq_list_transactions(location = our_locations$id[2], 
+                                         begin_time = as.Date('2018-05-11'), 
+                                         end_time = as.Date('2018-05-12'))
+our_transactions
 ```
 
 ### Customers
-Similarly, you can pull information regarding a specific customer or list all customers.
+Once you pull data about transactions you can take the customer_id from the transaction 
+`tenders` field and match that up with customer details. In Square customers can 
+be placed into groups that allow for the analysis of transactions at a group-level.
 
 ```{r customers}
 # list all customers
@@ -129,29 +120,19 @@ our_customers$family_name <- "{HIDDEN}"
 our_customers %>% select(id, created_at, updated_at, 
                          given_name, family_name, preferences, groups)
 
-# search by id
-one_customer <- sq_get_customer(our_customers$id[1])
-one_customer$given_name <- "{HIDDEN}"
-one_customer$family_name <- "{HIDDEN}"
-one_customer %>% select(id, created_at, updated_at, 
-                        given_name, family_name, preferences, groups)
-```
-
-### Transactions
-When listing out transactions a particular location must be specified. The timeframe 
-defaults to the previous day using `Sys.Date() - 1`. The `tenders` field lists all 
-methods of payment used to pay in the transaction.
-
-```{r transactions}
-our_locations <- sq_list_locations()
-# list all transactions for a particular location
-our_transactions <- sq_list_transactions(location = our_locations$id[2])
-our_transactions %>% select(id, created_at, tenders, product, client_id)
-
-# search by id
-one_transaction <- sq_get_transaction(location = our_locations$id[2], 
-                                      our_transactions$id[1])
-one_transaction %>% select(id, created_at, tenders, product, client_id)
+# show the groups that each customer belongs to
+our_customers %>% 
+  select(id, groups) %>%
+  # drop the customers with NULL groups field
+  mutate(groups_cnt = sapply(our_customers$groups, length)) %>%
+  filter(groups_cnt > 0) %>%
+  unnest(groups) %>%
+  select(id, groups) %>%
+  transpose() %>%
+  # convert the groups id and name into two separate columns
+  map_df(~as_tibble(t(unlist(.)))) %>%
+  # filter to the groups designated automatically by Square
+  filter(grepl("^CQ689YH4KCJMY", groups.id))
 ```
 
 ## Credits

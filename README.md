@@ -8,13 +8,12 @@ squareupr<img src="man/figures/squareupr.png" width="120px" align="right" />
 
 -   OAuth 2.0 (Single sign-on) and Personal Access Token Authentication methods (`sq_auth()`)
 -   v2 Locations Endpoint (`sq_list_locations()`, `sq_get_location()`)
+-   v2 Transactions Endpoint (`sq_list_transactions()`, `sq_get_transaction()`)
 -   v2 Customers Endpoint - CRUD (Create, Retrieve, Update, Delete) methods for customers with:
     -   `sq_list_customers()`, `sq_get_customer()`, `sq_create_customer()`, `sq_update_customer()`, `sq_delete_customer()`
--   v2 Transactions Endpoint (`sq_list_transactions()`, `sq_get_transaction()`)
 -   v1 Payments Endpoint (`sq_list_payments()`, `sq_get_payment()`)
 -   v1 Items Endpoint - CRUD (Create, Retrieve, Update, Delete) methods for items with:
     -   `sq_list_items()`, `sq_get_item()`, `sq_create_item()`, `sq_update_item()`, `sq_delete_item()`
--   v1 Orders Endpoint - TODO
 
 Table of Contents
 -----------------
@@ -22,7 +21,6 @@ Table of Contents
 -   [Installation](#installation)
 -   [Usage](#usage)
     -   [Authenticate](#authenticate)
-    -   [Locations](#locations)
     -   [Customers](#customers)
     -   [Transactions](#transactions)
 -   [Credits](#credits)
@@ -44,13 +42,13 @@ Usage
 
 ### Authenticate
 
-First, load the **squareupr** package and login. There are two ways to authenticate:
+First, load the **squareupr** package and authenticate. There are two ways to authenticate:
 
 1.  Personal Access Token
 2.  OAuth 2.0
 
 ``` r
-library(dplyr)
+library(tidyverse)
 library(squareupr)
 
 # Using Personal Access Token (PAT)
@@ -70,50 +68,37 @@ sq_auth()
 
 OAuth 2.0 credentials will be cached locally in a file entitled `".httr-oauth-squareupr"` in the current working directory so that a new token is not needed each session.
 
-### Locations
+### Transactions
 
-You can pull information regarding locations for a specific location or listing all locations.
+With the v2 Locations endpoint you can pull information regarding all locations.
+One thing to note is that it is important to first pull down the location details for your business because this is required when searching for transactions and items to analyze. When listing transactions the timeframe defaults to the previous day using `Sys.Date() - 1`. The `tenders` field lists all methods of payment used to pay in the transaction.
 
 ``` r
 # list all locations
 our_locations <- sq_list_locations()
-our_locations$name <- "{HIDDEN}"
-our_locations %>% select(id, name, address, timezone, 
-                        capabilities, status, created_at)
-#> # A tibble: 5 x 7
-#>   id            name     address  timezone  capabilities status created_at
-#>   <chr>         <chr>    <list>   <chr>     <list>       <chr>  <chr>     
-#> 1 46FYN9N9RQS54 {HIDDEN} <list [… America/… <list [1]>   ACTIVE 2017-04-2…
-#> 2 DRDCJ2X8E2PMV {HIDDEN} <list [… America/… <list [1]>   ACTIVE 2016-09-2…
-#> 3 8T1TYXE840S00 {HIDDEN} <list [… America/… <list [1]>   ACTIVE 2016-09-2…
-#> 4 1AWPRVVVFWGQF {HIDDEN} <list [… America/… <list [1]>   ACTIVE 2017-04-1…
-#> 5 50X1GNAWEC8V0 {HIDDEN} <list [… America/… <list [1]>   ACTIVE 2017-03-0…
-
-# search by id
-one_location <- sq_get_location(our_locations$id[1])
-this_location_name <- one_location$name[1]
-one_location$name <- "{HIDDEN}"
-one_location %>% select(id, name, address, timezone, 
-                        capabilities, status, created_at)
-#> # A tibble: 1 x 7
-#>   id            name     address  timezone  capabilities status created_at
-#>   <chr>         <chr>    <list>   <chr>     <list>       <chr>  <chr>     
-#> 1 46FYN9N9RQS54 {HIDDEN} <list [… America/… <list [1]>   ACTIVE 2017-04-2…
-
-# search by name (must be an exact match)
-one_location <- sq_get_location(this_location_name)
-one_location$name <- "{HIDDEN}"
-one_location %>% select(id, name, address, timezone, 
-                        capabilities, status, created_at)
-#> # A tibble: 1 x 7
-#>   id            name     address  timezone  capabilities status created_at
-#>   <chr>         <chr>    <list>   <chr>     <list>       <chr>  <chr>     
-#> 1 46FYN9N9RQS54 {HIDDEN} <list [… America/… <list [1]>   ACTIVE 2017-04-2…
+our_transactions <- sq_list_transactions(location = our_locations$id[2], 
+                                         begin_time = as.Date('2018-05-11'), 
+                                         end_time = as.Date('2018-05-12'))
+our_transactions
+#> # A tibble: 245 x 6
+#>    id          location_id  created_at    tenders product client_id       
+#>    <chr>       <chr>        <chr>         <list>  <chr>   <chr>           
+#>  1 bUjFGVjBvN… DRDCJ2X8E2P… 2018-05-12T0… <list … REGIST… D5528FBA-E5DE-4…
+#>  2 5PZP31N5Zs… DRDCJ2X8E2P… 2018-05-11T2… <list … REGIST… A3A1FF51-325A-4…
+#>  3 BTrGydD6he… DRDCJ2X8E2P… 2018-05-11T2… <list … REGIST… 2B3D32EB-8E58-4…
+#>  4 XsqOAHl68z… DRDCJ2X8E2P… 2018-05-11T2… <list … REGIST… C50AF3D7-BE32-4…
+#>  5 vmLRzrwByS… DRDCJ2X8E2P… 2018-05-11T2… <list … REGIST… 52E40E1B-2333-4…
+#>  6 pTbzQApZW7… DRDCJ2X8E2P… 2018-05-11T2… <list … REGIST… 962766FF-1436-4…
+#>  7 lnE20zklpP… DRDCJ2X8E2P… 2018-05-11T2… <list … REGIST… A02191CC-9AC9-4…
+#>  8 DSumrqQW0L… DRDCJ2X8E2P… 2018-05-11T2… <list … REGIST… 1135FF4F-9B89-4…
+#>  9 tPwFXetIwe… DRDCJ2X8E2P… 2018-05-11T2… <list … REGIST… 0D95E79D-B44C-4…
+#> 10 bqUuFrzH71… DRDCJ2X8E2P… 2018-05-11T2… <list … REGIST… 48FD6A49-80A9-4…
+#> # ... with 235 more rows
 ```
 
 ### Customers
 
-Similarly, you can pull information regarding a specific customer or list all customers.
+Once you pull data about transactions you can take the customer\_id from the transaction `tenders` field and match that up with customer details. In Square customers can be placed into groups that allow for the analysis of transactions at a group-level.
 
 ``` r
 # list all customers
@@ -122,7 +107,7 @@ our_customers$given_name <- "{HIDDEN}"
 our_customers$family_name <- "{HIDDEN}"
 our_customers %>% select(id, created_at, updated_at, 
                          given_name, family_name, preferences, groups)
-#> # A tibble: 11,784 x 7
+#> # A tibble: 11,786 x 7
 #>    id     created_at  updated_at given_name family_name preferences groups
 #>    <chr>  <chr>       <chr>      <chr>      <chr>       <list>      <list>
 #>  1 M1RBD… 2017-01-09… 2018-02-0… {HIDDEN}   {HIDDEN}    <list [1]>  <list…
@@ -135,52 +120,35 @@ our_customers %>% select(id, created_at, updated_at,
 #>  8 ECVG5… 2017-09-30… 2018-03-1… {HIDDEN}   {HIDDEN}    <list [1]>  <list…
 #>  9 H8BZA… 2017-07-06… 2018-02-1… {HIDDEN}   {HIDDEN}    <list [1]>  <list…
 #> 10 ZCBZJ… 2018-01-16… 2018-03-0… {HIDDEN}   {HIDDEN}    <list [1]>  <list…
-#> # ... with 11,774 more rows
+#> # ... with 11,776 more rows
 
-# search by id
-one_customer <- sq_get_customer(our_customers$id[1])
-one_customer$given_name <- "{HIDDEN}"
-one_customer$family_name <- "{HIDDEN}"
-one_customer %>% select(id, created_at, updated_at, 
-                        given_name, family_name, preferences, groups)
-#> # A tibble: 1 x 7
-#>   id      created_at  updated_at given_name family_name preferences groups
-#>   <chr>   <chr>       <chr>      <chr>      <chr>       <list>      <list>
-#> 1 M1RBDF… 2017-01-09… 2018-02-0… {HIDDEN}   {HIDDEN}    <list [1]>  <list…
-```
-
-### Transactions
-
-When listing out transactions a particular location must be specified. The timeframe defaults to the previous day using `Sys.Date() - 1`. The `tenders` field lists all methods of payment used to pay in the transaction.
-
-``` r
-our_locations <- sq_list_locations()
-# list all transactions for a particular location
-our_transactions <- sq_list_transactions(location = our_locations$id[2])
-our_transactions %>% select(id, created_at, tenders, product, client_id)
-#> # A tibble: 240 x 5
-#>    id                       created_at           tenders product client_id
-#>    <chr>                    <chr>                <list>  <chr>   <chr>    
-#>  1 rYDAxQpwA32Ms6tSIAZ6dxMF 2018-05-13T00:30:07Z <list … REGIST… 9E0F262C…
-#>  2 lfUixbLgn5t6lkpJOzeQKwMF 2018-05-12T23:53:06Z <list … REGIST… 1E0D9001…
-#>  3 R1mpGADIec7rw9Dn2WuEpyMF 2018-05-12T23:42:54Z <list … REGIST… D248481E…
-#>  4 L0PlyaP051J5epR6zh4nDzMF 2018-05-12T23:31:05Z <list … REGIST… 68CE202E…
-#>  5 tRNteZq0q1aGStRwchzCItMF 2018-05-12T23:30:14Z <list … REGIST… D9BD5D23…
-#>  6 RREXhqkYue6KZeMaiIlgmwMF 2018-05-12T23:18:53Z <list … REGIST… D8F3F44A…
-#>  7 hrBFTUBgJK9ew24ylmkoKwMF 2018-05-12T23:01:28Z <list … REGIST… 39902B38…
-#>  8 ppU2IVDCGDe3Nhr2r2KhMwMF 2018-05-12T22:26:53Z <list … REGIST… BDEE4BC4…
-#>  9 1Lq8FnVen2xjqsokSsW6ryMF 2018-05-12T22:23:45Z <list … REGIST… 749EC1CF…
-#> 10 xHBABJ85g9T11gCUpt6C5vMF 2018-05-12T22:23:03Z <list … REGIST… 2F564A52…
-#> # ... with 230 more rows
-
-# search by id
-one_transaction <- sq_get_transaction(location = our_locations$id[2], 
-                                      our_transactions$id[1])
-one_transaction %>% select(id, created_at, tenders, product, client_id)
-#> # A tibble: 1 x 5
-#>   id                       created_at           tenders  product client_id
-#>   <chr>                    <chr>                <list>   <chr>   <chr>    
-#> 1 rYDAxQpwA32Ms6tSIAZ6dxMF 2018-05-13T00:30:07Z <list [… REGIST… 9E0F262C…
+# show the groups that each customer belongs to
+our_customers %>% 
+  select(id, groups) %>%
+  # drop the customers with NULL groups field
+  mutate(groups_cnt = sapply(our_customers$groups, length)) %>%
+  filter(groups_cnt > 0) %>%
+  unnest(groups) %>%
+  select(id, groups) %>%
+  transpose() %>%
+  # convert the groups id and name into two separate columns
+  map_df(~as_tibble(t(unlist(.)))) %>%
+  # filter to the groups designated automatically by Square
+  filter(grepl("^CQ689YH4KCJMY", groups.id))
+#> # A tibble: 13,445 x 3
+#>    id                         groups.id                 groups.name       
+#>    <chr>                      <chr>                     <chr>             
+#>  1 M1RBDFRK7S1Q1EP6EZFJFV3CBW CQ689YH4KCJMY.LOYALTY_ALL Loyalty Participa…
+#>  2 58MK9F1HQ5447D1QZDX60NHTP4 CQ689YH4KCJMY.CHURN_RISK  Lapsed            
+#>  3 58MK9F1HQ5447D1QZDX60NHTP4 CQ689YH4KCJMY.REACHABLE   Reachable         
+#>  4 MBSJA4QV4WX6N2XV8WV9VJJTG8 CQ689YH4KCJMY.LOYALTY_ALL Loyalty Participa…
+#>  5 MBSJA4QV4WX6N2XV8WV9VJJTG8 CQ689YH4KCJMY.REACHABLE   Reachable         
+#>  6 ZCBZJ234217KTV812WX4DP2404 CQ689YH4KCJMY.REACHABLE   Reachable         
+#>  7 FKEMR8KZCN3BH98RV78PKHKQ1R CQ689YH4KCJMY.LOYALTY_ALL Loyalty Participa…
+#>  8 FKEMR8KZCN3BH98RV78PKHKQ1R CQ689YH4KCJMY.CHURN_RISK  Lapsed            
+#>  9 78VMJPJNK959AHH0ZQPXDXEG3C CQ689YH4KCJMY.LOYALTY_ALL Loyalty Participa…
+#> 10 QASM1G54VX0QN2S15YS6KHEFCC CQ689YH4KCJMY.LOYAL       Regulars          
+#> # ... with 13,435 more rows
 ```
 
 Credits

@@ -135,11 +135,16 @@
     <p>Modifies the core details of an existing item.</p>
     
 
-    <pre class="usage"><span class='fu'>sq_update_item</span>(<span class='no'>item_id</span>, <span class='no'>input_data</span>, <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</pre>
+    <pre class="usage"><span class='fu'>sq_update_item</span>(<span class='no'>location</span>, <span class='no'>item_id</span>, <span class='no'>input_data</span>, <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
+    <tr>
+      <th>location</th>
+      <td><p>character; the Square ID or name associated to a location. 
+This must be an exact match to the ID or name as found using <a href='sq_list_locations.html'>sq_list_locations</a>.</p></td>
+    </tr>
     <tr>
       <th>item_id</th>
       <td><p>character; the Square ID assigned to each unique item. 
@@ -152,11 +157,6 @@ This can be found using <a href='sq_list_items.html'>sq_list_items</a></p></td>
     <tr>
       <th>verbose</th>
       <td><p>logical; do you want informative messages?</p></td>
-    </tr>
-    <tr>
-      <th>location</th>
-      <td><p>character; the Square ID or name associated to a location. 
-This must be an exact match to the ID or name as found using <a href='sq_list_locations.html'>sq_list_locations</a>.</p></td>
     </tr>
     </table>
     
