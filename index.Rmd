@@ -35,6 +35,7 @@ knitr::opts_chunk$set(
     * [Authenticate](#authenticate)
     * [Locations](#locations)
     * [Customers](#customers)
+    * [Transactions](#transactions)
   * [Credits](#credits)
   * [More Information](#more-information)
 
@@ -66,11 +67,11 @@ suppressMessages(sq_auth(personal_access_token = settings$personal_access_token,
 ```
 
 ```{r, eval=FALSE}
-suppressWarnings(suppressMessages(library(dplyr)))
+library(dplyr)
 library(squareupr)
 
 # Using Personal Access Token (PAT)
-sq_auth(personal_access_token = "{PERSONAL_ACCESS_TOKEN_HERE}")
+sq_auth(personal_access_token = "sq-Th1s1sMyPers0nalAcessT0ken")
 
 # Using OAuth 2.0 authentication
 sq_auth()
@@ -115,11 +116,10 @@ one_location %>% select(id, name, address, timezone,
 ```
 
 ### Customers
-Similarly, you can pull information regarding a specific customer or listing 
-all customers.
+Similarly, you can pull information regarding a specific customer or list all customers.
 
 ```{r customers}
-# list all locations
+# list all customers
 our_customers <- sq_list_customers()
 our_customers$given_name <- "{HIDDEN}"
 our_customers$family_name <- "{HIDDEN}"
@@ -132,6 +132,23 @@ one_customer$given_name <- "{HIDDEN}"
 one_customer$family_name <- "{HIDDEN}"
 one_customer %>% select(id, created_at, updated_at, 
                         given_name, family_name, preferences, groups)
+```
+
+### Transactions
+When listing out transactions a particular location must be specified. The timeframe 
+defaults to the previous day using `Sys.Date() - 1`. The `tenders` field lists all 
+methods of payment used to pay in the transaction.
+
+```{r transactions}
+our_locations <- sq_list_locations()
+# list all transactions for a particular location
+our_transactions <- sq_list_transactions(location = our_locations$id[2])
+our_transactions %>% select(id, created_at, tenders, product, client_id)
+
+# search by id
+one_transaction <- sq_get_transaction(location = our_locations$id[2], 
+                                      our_transactions$id[1])
+one_transaction %>% select(id, created_at, tenders, product, client_id)
 ```
 
 ## Credits

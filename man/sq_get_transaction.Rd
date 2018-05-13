@@ -11,7 +11,7 @@ sq_get_transaction(location, transaction_id, verbose = FALSE)
 This must be an exact match to the ID or name as found using \link{sq_list_locations}.}
 
 \item{transaction_id}{character; the Square ID assigned to each unique transaction. 
-This can be found using ...}
+This can be found using \link{sq_list_transactions}}
 
 \item{verbose}{logical; do you want informative messages?}
 }
@@ -26,8 +26,11 @@ Required permissions: \code{PAYMENTS_READ}
 }
 \examples{
 \dontrun{
-my_locations <- sq_list_locations()
-this_transaction <- sq_get_transaction(location = my_locations$id[1], 
-                                       transaction_id = "ThisIsATestTransactionId")
+our_locations <- sq_list_locations()
+our_transactions <- sq_list_transactions(location = our_locations$id[1], 
+                                         begin=Sys.Date()-1, end=Sys.Date())
+# return just one transaction                                          
+this_transaction <- sq_get_transaction(location = our_locations$id[1], 
+                                       transaction_id = our_transactions$id[1])
 }
 }

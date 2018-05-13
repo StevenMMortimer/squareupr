@@ -4,9 +4,13 @@
 \alias{sq_list_customers}
 \title{List Customers}
 \usage{
-sq_list_customers(verbose = FALSE)
+sq_list_customers(cursor = NULL, verbose = FALSE)
 }
 \arguments{
+\item{cursor}{character; A pagination cursor returned by a previous call to 
+this endpoint. Typically this is not needed because functions in the package 
+will automatically paginate results.}
+
 \item{verbose}{logical; do you want informative messages?}
 }
 \value{

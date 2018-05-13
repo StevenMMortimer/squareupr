@@ -193,8 +193,12 @@ sq_auth_check <- function(verbose = FALSE) {
     nows_timestamp <- as.numeric(Sys.time())
     time_diff <- nows_timestamp - expires_at_timestamp
     if(time_diff > 0){
-      # TODO: must be better way to validate the token.
       sq_auth_refresh(verbose = verbose)
+    } else if(time_diff > 1296000) { 
+      # per https://docs.connect.squareup.com/api/oauth#post-renew
+      stop("The current token in force expired over 15 days ago so it cannot be renewed. Obtain a new token using sq_auth().")
+    } else {
+      # don't need to refresh since it hasn't expired yet
     }
     res <- .state$token
   } else if(personal_access_token_available(verbose)) {
@@ -221,7 +225,6 @@ sq_auth_check <- function(verbose = FALSE) {
 #' @export
 sq_auth_refresh <- function(verbose = FALSE) {
   if(token_available(verbose)){
-
     # token renew
     httr_url <- sprintf("%s/oauth2/clients/%s/access-token/renew", 
                         getOption("squareupr.api_base_url"),
@@ -236,6 +239,8 @@ sq_auth_refresh <- function(verbose = FALSE) {
                           encode = "json")
     response_parsed <- content(httr_response, "parsed")
     .state$token$credentials <- response_parsed
+    # cache the new credentials to be used
+    saveRDS(object=.state$token, file=.state$token$cache_path)
   } else {
     message("No token found. sq_auth_refresh() only refreshes OAuth tokens")
   }

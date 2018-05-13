@@ -110,7 +110,7 @@
 <li>OAuth 2.0 (Single sign-on) and Personal Access Token Authentication methods (<code><a href="reference/sq_auth.html">sq_auth()</a></code>)</li>
 <li>v2 Locations Endpoint (<code><a href="reference/sq_list_locations.html">sq_list_locations()</a></code>, <code><a href="reference/sq_get_location.html">sq_get_location()</a></code>)</li>
 <li>v2 Customers Endpoint (<code><a href="reference/sq_list_customers.html">sq_list_customers()</a></code>, <code><a href="reference/sq_get_customer.html">sq_get_customer()</a></code>)</li>
-<li>v2 Transactions Endpoint - TODO (<code>sq_list_transactions()</code>, <code><a href="reference/sq_get_transaction.html">sq_get_transaction()</a></code>)</li>
+<li>v2 Transactions Endpoint - TODO (<code><a href="reference/sq_list_transactions.html">sq_list_transactions()</a></code>, <code><a href="reference/sq_get_transaction.html">sq_get_transaction()</a></code>)</li>
 <li>v1 Payments Endpoint - TODO</li>
 <li>v1 Orders Endpoint - TODO</li>
 </ul>
@@ -125,6 +125,7 @@
 <li><a href="#authenticate">Authenticate</a></li>
 <li><a href="#locations">Locations</a></li>
 <li><a href="#customers">Customers</a></li>
+<li><a href="#transactions">Transactions</a></li>
 </ul>
 </li>
 <li><a href="#credits">Credits</a></li>
@@ -150,11 +151,11 @@ devtools<span class="op">::</span><span class="kw"><a href="http://www.rdocument
 <li>Personal Access Token</li>
 <li>OAuth 2.0</li>
 </ol>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">suppressWarnings</span>(<span class="kw">suppressMessages</span>(<span class="kw">library</span>(dplyr)))
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(dplyr)
 <span class="kw">library</span>(squareupr)
 
 <span class="co"># Using Personal Access Token (PAT)</span>
-<span class="kw"><a href="reference/sq_auth.html">sq_auth</a></span>(<span class="dt">personal_access_token =</span> <span class="st">"{PERSONAL_ACCESS_TOKEN_HERE}"</span>)
+<span class="kw"><a href="reference/sq_auth.html">sq_auth</a></span>(<span class="dt">personal_access_token =</span> <span class="st">"sq-Th1s1sMyPers0nalAcessT0ken"</span>)
 
 <span class="co"># Using OAuth 2.0 authentication</span>
 <span class="kw"><a href="reference/sq_auth.html">sq_auth</a></span>()</code></pre></div>
@@ -206,14 +207,14 @@ one_location <span class="op">%&gt;%</span><span class="st"> </span><span class=
 <div id="customers" class="section level3">
 <h3 class="hasAnchor">
 <a href="#customers" class="anchor"></a>Customers</h3>
-<p>Similarly, you can pull information regarding a specific customer or listing all customers.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># list all locations</span>
+<p>Similarly, you can pull information regarding a specific customer or list all customers.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># list all customers</span>
 our_customers &lt;-<span class="st"> </span><span class="kw"><a href="reference/sq_list_customers.html">sq_list_customers</a></span>()
 our_customers<span class="op">$</span>given_name &lt;-<span class="st"> "{HIDDEN}"</span>
 our_customers<span class="op">$</span>family_name &lt;-<span class="st"> "{HIDDEN}"</span>
 our_customers <span class="op">%&gt;%</span><span class="st"> </span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/select.html">select</a></span>(id, created_at, updated_at, 
                          given_name, family_name, preferences, groups)
-<span class="co">#&gt; # A tibble: 100 x 7</span>
+<span class="co">#&gt; # A tibble: 11,782 x 7</span>
 <span class="co">#&gt;    id     created_at  updated_at given_name family_name preferences groups</span>
 <span class="co">#&gt;    &lt;chr&gt;  &lt;chr&gt;       &lt;chr&gt;      &lt;chr&gt;      &lt;chr&gt;       &lt;list&gt;      &lt;list&gt;</span>
 <span class="co">#&gt;  1 M1RBD… 2017-01-09… 2018-02-0… {HIDDEN}   {HIDDEN}    &lt;lgl [1]&gt;   &lt;list…</span>
@@ -226,7 +227,7 @@ our_customers <span class="op">%&gt;%</span><span class="st"> </span><span class
 <span class="co">#&gt;  8 ECVG5… 2017-09-30… 2018-03-1… {HIDDEN}   {HIDDEN}    &lt;lgl [1]&gt;   &lt;list…</span>
 <span class="co">#&gt;  9 H8BZA… 2017-07-06… 2018-02-1… {HIDDEN}   {HIDDEN}    &lt;lgl [1]&gt;   &lt;list…</span>
 <span class="co">#&gt; 10 ZCBZJ… 2018-01-16… 2018-03-0… {HIDDEN}   {HIDDEN}    &lt;lgl [1]&gt;   &lt;list…</span>
-<span class="co">#&gt; # ... with 90 more rows</span>
+<span class="co">#&gt; # ... with 11,772 more rows</span>
 
 <span class="co"># search by id</span>
 one_customer &lt;-<span class="st"> </span><span class="kw"><a href="reference/sq_get_customer.html">sq_get_customer</a></span>(our_customers<span class="op">$</span>id[<span class="dv">1</span>])
@@ -238,6 +239,38 @@ one_customer <span class="op">%&gt;%</span><span class="st"> </span><span class=
 <span class="co">#&gt;   id      created_at  updated_at given_name family_name preferences groups</span>
 <span class="co">#&gt;   &lt;chr&gt;   &lt;chr&gt;       &lt;chr&gt;      &lt;chr&gt;      &lt;chr&gt;       &lt;list&gt;      &lt;list&gt;</span>
 <span class="co">#&gt; 1 M1RBDF… 2017-01-09… 2018-02-0… {HIDDEN}   {HIDDEN}    &lt;lgl [1]&gt;   &lt;list…</span></code></pre></div>
+</div>
+<div id="transactions" class="section level3">
+<h3 class="hasAnchor">
+<a href="#transactions" class="anchor"></a>Transactions</h3>
+<p>When listing out transactions a particular location must be specified. The timeframe defaults to the previous day using <code>Sys.Date() - 1</code>. The <code>tenders</code> field lists all methods of payment used to pay in the transaction.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">our_locations &lt;-<span class="st"> </span><span class="kw"><a href="reference/sq_list_locations.html">sq_list_locations</a></span>()
+<span class="co"># list all transactions for a particular location</span>
+our_transactions &lt;-<span class="st"> </span><span class="kw"><a href="reference/sq_list_transactions.html">sq_list_transactions</a></span>(<span class="dt">location =</span> our_locations<span class="op">$</span>id[<span class="dv">2</span>])
+our_transactions <span class="op">%&gt;%</span><span class="st"> </span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/select.html">select</a></span>(id, created_at, tenders, product, client_id)
+<span class="co">#&gt; # A tibble: 245 x 5</span>
+<span class="co">#&gt;    id                       created_at           tenders product client_id</span>
+<span class="co">#&gt;    &lt;chr&gt;                    &lt;chr&gt;                &lt;list&gt;  &lt;chr&gt;   &lt;chr&gt;    </span>
+<span class="co">#&gt;  1 bUjFGVjBvNgBPtobfJhuwsMF 2018-05-12T00:10:32Z &lt;list … REGIST… D5528FBA…</span>
+<span class="co">#&gt;  2 5PZP31N5Zs6V4fDTIyiOMuMF 2018-05-11T23:48:27Z &lt;list … REGIST… A3A1FF51…</span>
+<span class="co">#&gt;  3 BTrGydD6hek29l8oHYKvFuMF 2018-05-11T23:03:30Z &lt;list … REGIST… 2B3D32EB…</span>
+<span class="co">#&gt;  4 XsqOAHl68zEQejnPTk7C1vMF 2018-05-11T22:44:12Z &lt;list … REGIST… C50AF3D7…</span>
+<span class="co">#&gt;  5 vmLRzrwByS1JkjKvogOJ8xMF 2018-05-11T22:06:51Z &lt;list … REGIST… 52E40E1B…</span>
+<span class="co">#&gt;  6 pTbzQApZW7IjirnnbnbAAuMF 2018-05-11T22:06:29Z &lt;list … REGIST… 962766FF…</span>
+<span class="co">#&gt;  7 lnE20zklpPIjssdTokRZJvMF 2018-05-11T22:03:41Z &lt;list … REGIST… A02191CC…</span>
+<span class="co">#&gt;  8 DSumrqQW0LBrOzFQ4fmAwtMF 2018-05-11T21:55:42Z &lt;list … REGIST… 1135FF4F…</span>
+<span class="co">#&gt;  9 tPwFXetIwenAbmqDZoGZnuMF 2018-05-11T21:48:17Z &lt;list … REGIST… 0D95E79D…</span>
+<span class="co">#&gt; 10 bqUuFrzH718YI8PhYQYVQtMF 2018-05-11T21:43:57Z &lt;list … REGIST… 48FD6A49…</span>
+<span class="co">#&gt; # ... with 235 more rows</span>
+
+<span class="co"># search by id</span>
+one_transaction &lt;-<span class="st"> </span><span class="kw"><a href="reference/sq_get_transaction.html">sq_get_transaction</a></span>(<span class="dt">location =</span> our_locations<span class="op">$</span>id[<span class="dv">2</span>], 
+                                      our_transactions<span class="op">$</span>id[<span class="dv">1</span>])
+one_transaction <span class="op">%&gt;%</span><span class="st"> </span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/select.html">select</a></span>(id, created_at, tenders, product, client_id)
+<span class="co">#&gt; # A tibble: 1 x 5</span>
+<span class="co">#&gt;   id                       created_at           tenders  product client_id</span>
+<span class="co">#&gt;   &lt;chr&gt;                    &lt;chr&gt;                &lt;list&gt;   &lt;chr&gt;   &lt;chr&gt;    </span>
+<span class="co">#&gt; 1 bUjFGVjBvNgBPtobfJhuwsMF 2018-05-12T00:10:32Z &lt;list [… REGIST… D5528FBA…</span></code></pre></div>
 </div>
 </div>
 <div id="credits" class="section level2">

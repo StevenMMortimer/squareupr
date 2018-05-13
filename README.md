@@ -21,6 +21,7 @@ Table of Contents
     -   [Authenticate](#authenticate)
     -   [Locations](#locations)
     -   [Customers](#customers)
+    -   [Transactions](#transactions)
 -   [Credits](#credits)
 -   [More Information](#more-information)
 
@@ -46,11 +47,11 @@ First, load the **squareupr** package and login. There are two ways to authentic
 2.  OAuth 2.0
 
 ``` r
-suppressWarnings(suppressMessages(library(dplyr)))
+library(dplyr)
 library(squareupr)
 
 # Using Personal Access Token (PAT)
-sq_auth(personal_access_token = "{PERSONAL_ACCESS_TOKEN_HERE}")
+sq_auth(personal_access_token = "sq-Th1s1sMyPers0nalAcessT0ken")
 
 # Using OAuth 2.0 authentication
 sq_auth()
@@ -109,16 +110,16 @@ one_location %>% select(id, name, address, timezone,
 
 ### Customers
 
-Similarly, you can pull information regarding a specific customer or listing all customers.
+Similarly, you can pull information regarding a specific customer or list all customers.
 
 ``` r
-# list all locations
+# list all customers
 our_customers <- sq_list_customers()
 our_customers$given_name <- "{HIDDEN}"
 our_customers$family_name <- "{HIDDEN}"
 our_customers %>% select(id, created_at, updated_at, 
                          given_name, family_name, preferences, groups)
-#> # A tibble: 100 x 7
+#> # A tibble: 9,900 x 7
 #>    id     created_at  updated_at given_name family_name preferences groups
 #>    <chr>  <chr>       <chr>      <chr>      <chr>       <list>      <list>
 #>  1 M1RBD… 2017-01-09… 2018-02-0… {HIDDEN}   {HIDDEN}    <lgl [1]>   <list…
@@ -131,7 +132,7 @@ our_customers %>% select(id, created_at, updated_at,
 #>  8 ECVG5… 2017-09-30… 2018-03-1… {HIDDEN}   {HIDDEN}    <lgl [1]>   <list…
 #>  9 H8BZA… 2017-07-06… 2018-02-1… {HIDDEN}   {HIDDEN}    <lgl [1]>   <list…
 #> 10 ZCBZJ… 2018-01-16… 2018-03-0… {HIDDEN}   {HIDDEN}    <lgl [1]>   <list…
-#> # ... with 90 more rows
+#> # ... with 9,890 more rows
 
 # search by id
 one_customer <- sq_get_customer(our_customers$id[1])
@@ -143,6 +144,40 @@ one_customer %>% select(id, created_at, updated_at,
 #>   id      created_at  updated_at given_name family_name preferences groups
 #>   <chr>   <chr>       <chr>      <chr>      <chr>       <list>      <list>
 #> 1 M1RBDF… 2017-01-09… 2018-02-0… {HIDDEN}   {HIDDEN}    <lgl [1]>   <list…
+```
+
+### Transactions
+
+When listing out transactions a particular location must be specified. The timeframe defaults to the previous day using `Sys.Date() - 1`. The `tenders` field lists all methods of payment used to pay in the transaction.
+
+``` r
+our_locations <- sq_list_locations()
+# list all transactions for a particular location
+our_transactions <- sq_list_transactions(location = our_locations$id[2])
+our_transactions %>% select(id, created_at, tenders, product, client_id)
+#> # A tibble: 245 x 5
+#>    id                       created_at           tenders product client_id
+#>    <chr>                    <chr>                <list>  <chr>   <chr>    
+#>  1 bUjFGVjBvNgBPtobfJhuwsMF 2018-05-12T00:10:32Z <list … REGIST… D5528FBA…
+#>  2 5PZP31N5Zs6V4fDTIyiOMuMF 2018-05-11T23:48:27Z <list … REGIST… A3A1FF51…
+#>  3 BTrGydD6hek29l8oHYKvFuMF 2018-05-11T23:03:30Z <list … REGIST… 2B3D32EB…
+#>  4 XsqOAHl68zEQejnPTk7C1vMF 2018-05-11T22:44:12Z <list … REGIST… C50AF3D7…
+#>  5 vmLRzrwByS1JkjKvogOJ8xMF 2018-05-11T22:06:51Z <list … REGIST… 52E40E1B…
+#>  6 pTbzQApZW7IjirnnbnbAAuMF 2018-05-11T22:06:29Z <list … REGIST… 962766FF…
+#>  7 lnE20zklpPIjssdTokRZJvMF 2018-05-11T22:03:41Z <list … REGIST… A02191CC…
+#>  8 DSumrqQW0LBrOzFQ4fmAwtMF 2018-05-11T21:55:42Z <list … REGIST… 1135FF4F…
+#>  9 tPwFXetIwenAbmqDZoGZnuMF 2018-05-11T21:48:17Z <list … REGIST… 0D95E79D…
+#> 10 bqUuFrzH718YI8PhYQYVQtMF 2018-05-11T21:43:57Z <list … REGIST… 48FD6A49…
+#> # ... with 235 more rows
+
+# search by id
+one_transaction <- sq_get_transaction(location = our_locations$id[2], 
+                                      our_transactions$id[1])
+one_transaction %>% select(id, created_at, tenders, product, client_id)
+#> # A tibble: 1 x 5
+#>   id                       created_at           tenders  product client_id
+#>   <chr>                    <chr>                <list>   <chr>   <chr>    
+#> 1 bUjFGVjBvNgBPtobfJhuwsMF 2018-05-12T00:10:32Z <list [… REGIST… D5528FBA…
 ```
 
 Credits

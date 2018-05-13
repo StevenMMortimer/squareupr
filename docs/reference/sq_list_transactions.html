@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Get Transaction — sq_get_transaction • squareupr</title>
+<title>List Transactions — sq_list_transactions • squareupr</title>
 
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script>
@@ -25,9 +25,9 @@
 <link href="../pkgdown.css" rel="stylesheet">
 <script src="../jquery.sticky-kit.min.js"></script>
 <script src="../pkgdown.js"></script>
-<meta property="og:title" content="Get Transaction — sq_get_transaction" />
+<meta property="og:title" content="List Transactions — sq_list_transactions" />
 
-<meta property="og:description" content="Retrieves details for a single transaction." />
+<meta property="og:description" content="Lists transactions for a particular location." />
 
 <meta property="og:image" content="https://stevenmmortimer.github.io/squareupr/logo.png" />
 <meta name="twitter:card" content="summary" />
@@ -127,15 +127,17 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Get Transaction</h1>
+    <h1>List Transactions</h1>
     <small>Source: <a href='https://github.com/StevenMMortimer/squareupr/blob/master/R/transactions.R'><code>R/transactions.R</code></a></small>
     </div>
 
     
-    <p>Retrieves details for a single transaction.</p>
+    <p>Lists transactions for a particular location.</p>
     
 
-    <pre class="usage"><span class='fu'>sq_get_transaction</span>(<span class='no'>location</span>, <span class='no'>transaction_id</span>, <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</pre>
+    <pre class="usage"><span class='fu'>sq_list_transactions</span>(<span class='no'>location</span>, <span class='kw'>begin_time</span> <span class='kw'>=</span> <span class='fu'>Sys.Date</span>() - <span class='fl'>1</span>,
+  <span class='kw'>end_time</span> <span class='kw'>=</span> <span class='fu'>Sys.Date</span>(), <span class='kw'>sort_order</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"DESC"</span>, <span class='st'>"ASC"</span>), <span class='kw'>cursor</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -146,9 +148,29 @@
 This must be an exact match to the ID or name as found using <a href='sq_list_locations.html'>sq_list_locations</a>.</p></td>
     </tr>
     <tr>
-      <th>transaction_id</th>
-      <td><p>character; the Square ID assigned to each unique transaction. 
-This can be found using <a href='sq_list_transactions.html'>sq_list_transactions</a></p></td>
+      <th>begin_time</th>
+      <td><p>Date or DateTime class; The beginning of the requested reporting 
+period. The default value is one day prior at midnight local time (i.e. start of yesterday). 
+If the value is a Date (no time component) the time is started at midnight of the date 
+of the local timezone.</p></td>
+    </tr>
+    <tr>
+      <th>end_time</th>
+      <td><p>Date or DateTime class; The end of the requested reporting period. 
+The default value is today at midnight local time (i.e. start of today). If the 
+value is a Date (no time component) the time is started at midnight of the date 
+of the local timezone.</p></td>
+    </tr>
+    <tr>
+      <th>sort_order</th>
+      <td><p>character; The order in which results are listed in the response 
+(<code>ASC</code> for oldest first, <code>DESC</code> for newest first). The default value is <code>DESC</code>.</p></td>
+    </tr>
+    <tr>
+      <th>cursor</th>
+      <td><p>character; A pagination cursor returned by a previous call to 
+this endpoint. Typically this is not needed because functions in the package 
+will automatically paginate results.</p></td>
     </tr>
     <tr>
       <th>verbose</th>
@@ -158,21 +180,31 @@ This can be found using <a href='sq_list_transactions.html'>sq_list_transactions
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p><code>tbl_df</code> of a single transaction</p>
+    <p><code>tbl_df</code> of transactions</p>
     
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
-    <p>Required permissions: <code>PAYMENTS_READ</code></p>
+    <p>Transactions include payment information from sales and exchanges and
+refund information from returns and exchanges. Required permissions: <code>PAYMENTS_READ</code></p>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><span class='co'># NOT RUN {</span>
 <span class='no'>our_locations</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='sq_list_locations.html'>sq_list_locations</a></span>()
-<span class='no'>our_transactions</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='sq_list_transactions.html'>sq_list_transactions</a></span>(<span class='kw'>location</span> <span class='kw'>=</span> <span class='no'>our_locations</span>$<span class='no'>id</span>[<span class='fl'>1</span>],
-                                         <span class='kw'>begin</span><span class='kw'>=</span><span class='fu'>Sys.Date</span>()-<span class='fl'>1</span>, <span class='kw'>end</span><span class='kw'>=</span><span class='fu'>Sys.Date</span>())
-<span class='co'># return just one transaction                                          </span>
-<span class='no'>this_transaction</span> <span class='kw'>&lt;-</span> <span class='fu'>sq_get_transaction</span>(<span class='kw'>location</span> <span class='kw'>=</span> <span class='no'>our_locations</span>$<span class='no'>id</span>[<span class='fl'>1</span>],
-                                       <span class='kw'>transaction_id</span> <span class='kw'>=</span> <span class='no'>our_transactions</span>$<span class='no'>id</span>[<span class='fl'>1</span>])
+<span class='no'>yesterdays_transactions</span> <span class='kw'>&lt;-</span> <span class='fu'>sq_list_transactions</span>(<span class='no'>our_locations</span>$<span class='no'>id</span>[<span class='fl'>1</span>])
+
+<span class='no'>sorted_transactions</span> <span class='kw'>&lt;-</span> <span class='fu'>sq_list_transactions</span>(<span class='no'>our_locations</span>$<span class='no'>id</span>[<span class='fl'>1</span>],
+                                            <span class='kw'>begin_time</span> <span class='kw'>=</span> <span class='fu'>Sys.Date</span>() - <span class='fl'>1</span>,
+                                            <span class='kw'>end_time</span> <span class='kw'>=</span> <span class='fu'>Sys.Date</span>(),
+                                            <span class='kw'>sort_order</span> <span class='kw'>=</span> <span class='st'>"ASC"</span>)
+<span class='co'># specify the time range as datetimes: </span>
+<span class='co'>#   - Beginning April 6th, 2018 at 5PM EDT                                    </span>
+<span class='co'>#   - Ending April 8th, 2018 at 8AM EDT                                  </span>
+<span class='no'>begin</span> <span class='kw'>&lt;-</span> <span class='fu'>as.POSIXct</span>(<span class='st'>"2018-04-06 17:00:00"</span>, <span class='kw'>tz</span><span class='kw'>=</span><span class='st'>"America/New_York"</span>)
+<span class='no'>end</span> <span class='kw'>&lt;-</span> <span class='fu'>as.POSIXct</span>(<span class='st'>"2018-04-08 8:00:00"</span>, <span class='kw'>tz</span><span class='kw'>=</span><span class='st'>"America/New_York"</span>)
+<span class='no'>custom_time_range</span> <span class='kw'>&lt;-</span> <span class='fu'>sq_list_transactions</span>(<span class='no'>our_locations</span>$<span class='no'>id</span>[<span class='fl'>1</span>],
+                                          <span class='kw'>begin_time</span> <span class='kw'>=</span> <span class='no'>begin</span>,
+                                          <span class='kw'>end_time</span> <span class='kw'>=</span> <span class='no'>end</span>)
 <span class='co'># }</span></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">

@@ -9,10 +9,10 @@ knitr::opts_chunk$set(
 
 ## ----auth, include = FALSE-----------------------------------------------
 suppressWarnings(suppressMessages(library(dplyr)))
-suppressWarnings(suppressMessages(library(here)))
 library(squareupr)
-token_path <- here::here("tests", "testthat", "squareupr_token.rds")
-suppressMessages(sq_auth(token = token_path, verbose = FALSE))
+settings <- readRDS(here::here("tests", "testthat", "squareupr_test_settings.rds"))
+suppressMessages(sq_auth(personal_access_token = settings$personal_access_token, 
+                         verbose = FALSE))
 
 ## ----load-package, eval=FALSE--------------------------------------------
 #  suppressWarnings(suppressMessages(library(dplyr)))

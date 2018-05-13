@@ -31,7 +31,7 @@ sf_auth(personal_access_token = "sq-Th1s1sMyPers0nalAcessT0ken")
 ```
 
 NOTE: In order to use OAuth 2.0 authentication it is necessary that you setup your 
-own Connected App in the Square dashboard. A consumer id and secret will be provided, 
+own Connected App in the Square dashboard. An App ID and App Secret will be provided, 
 then you will be able to plug into your script like so:
 
 
@@ -43,7 +43,6 @@ sq_auth()
 ```
 
 ### Check out the Tests
-
 The **squareupr** package has quite a bit of unit test coverage to track any 
 changes made between newly released versions of the Square APIs. These tests are 
 great source of examples for how to interect with the API.
