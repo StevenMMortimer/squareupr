@@ -130,9 +130,9 @@ sq_create_item <- function(location,
   
   this_location <- sq_get_location(location=location)
   
-  endpoint_url <- parse_url(sprintf("%s/v1/%s/items", 
-                                    getOption("squareupr.api_base_url"), 
-                                    this_location$id[1]))
+  httr_url <- sprintf("%s/v1/%s/items",
+                      getOption("squareupr.api_base_url"), 
+                      this_location$id[1])
   
   if(verbose) message(httr_url)
   
@@ -211,7 +211,8 @@ sq_delete_item <- function(location,
 #' this_item <- sq_get_item(updated_item$id[1])
 #' }
 #' @export
-sq_update_item <- function(item_id, 
+sq_update_item <- function(location, 
+                           item_id, 
                            input_data,
                            verbose = FALSE){
   

@@ -4,18 +4,18 @@
 \alias{sq_update_item}
 \title{Update Item}
 \usage{
-sq_update_item(item_id, input_data, verbose = FALSE)
+sq_update_item(location, item_id, input_data, verbose = FALSE)
 }
 \arguments{
+\item{location}{character; the Square ID or name associated to a location. 
+This must be an exact match to the ID or name as found using \link{sq_list_locations}.}
+
 \item{item_id}{character; the Square ID assigned to each unique item. 
 This can be found using \link{sq_list_items}}
 
 \item{input_data}{\code{list}; data used for creating or updating an object.}
 
 \item{verbose}{logical; do you want informative messages?}
-
-\item{location}{character; the Square ID or name associated to a location. 
-This must be an exact match to the ID or name as found using \link{sq_list_locations}.}
 }
 \value{
 \code{tbl_df} of the updated item record
