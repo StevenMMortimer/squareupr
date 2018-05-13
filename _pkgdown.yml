@@ -42,7 +42,11 @@ reference:
     contents:
       - '`sq_get_customer`'
       - '`sq_list_customers`'
+      - '`sq_create_customer`'
+      - '`sq_delete_customer`'
+      - '`sq_update_customer`'
   - title: Transactions Endpoint
     desc: Functions used for retrieving transaction details.
     contents:
       - '`sq_get_transaction`'
+      - '`sq_list_transactions`'

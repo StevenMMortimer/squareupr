@@ -35,9 +35,10 @@ sq_get_transaction <- function(location,
   
   httr_response <- rGET(httr_url, add_headers(Authorization = sprintf("Bearer %s", sq_token()), 
                                               Accept = "application/json"))
+  catch_errors(httr_response)
   response_parsed <- content(httr_response, "parsed")
   resultset <- response_parsed %>%
-    map_df(~as_tibble(modify_if(., ~length(.x) > 1, list)))
+    map_df(~as_tibble(modify_if(., ~(length(.x) > 1 | is.list(.x)), list)))
 
   return(resultset)
 }
@@ -122,9 +123,10 @@ sq_list_transactions <- function(location,
   
   httr_response <- rGET(httr_url, add_headers(Authorization = sprintf("Bearer %s", sq_token()), 
                                               Accept = "application/json"))
+  catch_errors(httr_response)
   response_parsed <- content(httr_response, "parsed")
   resultset <- response_parsed$transactions %>%
-    map_df(~as_tibble(modify_if(., ~length(.x) > 1, list)))
+    map_df(~as_tibble(modify_if(., ~(length(.x) > 1 | is.list(.x)), list)))
   
   # check whether it has another page of records and continue to pull if so
   if(!is.null(response_parsed$cursor)){

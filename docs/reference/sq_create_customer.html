@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Catches httr errors and prints them nicely — catch_errors • squareupr</title>
+<title>Create Customer — sq_create_customer • squareupr</title>
 
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script>
@@ -25,9 +25,9 @@
 <link href="../pkgdown.css" rel="stylesheet">
 <script src="../jquery.sticky-kit.min.js"></script>
 <script src="../pkgdown.js"></script>
-<meta property="og:title" content="Catches httr errors and prints them nicely — catch_errors" />
+<meta property="og:title" content="Create Customer — sq_create_customer" />
 
-<meta property="og:description" content="Catches httr errors and prints them nicely" />
+<meta property="og:description" content="Creates a new customer for a business, which can have associated cards on file." />
 
 <meta property="og:image" content="https://stevenmmortimer.github.io/squareupr/logo.png" />
 <meta name="twitter:card" content="summary" />
@@ -127,28 +127,66 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Catches httr errors and prints them nicely</h1>
-    <small>Source: <a href='https://github.com/StevenMMortimer/squareupr/blob/master/R/utils-httr.R'><code>R/utils-httr.R</code></a></small>
+    <h1>Create Customer</h1>
+    <small>Source: <a href='https://github.com/StevenMMortimer/squareupr/blob/master/R/customers.R'><code>R/customers.R</code></a></small>
     </div>
 
     
-    <p>Catches httr errors and prints them nicely</p>
+    <p>Creates a new customer for a business, which can have associated cards on file.</p>
     
 
-    <pre class="usage"><span class='fu'>catch_errors</span>(<span class='no'>httr_response</span>)</pre>
-        
-    <h2 class="hasAnchor" id="note"><a class="anchor" href="#note"></a>Note</h2>
+    <pre class="usage"><span class='fu'>sq_create_customer</span>(<span class='no'>input_data</span>, <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</pre>
+    
+    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
+    <table class="ref-arguments">
+    <colgroup><col class="name" /><col class="desc" /></colgroup>
+    <tr>
+      <th>input_data</th>
+      <td><p><code>list</code>; data used for creating or updating an object.</p></td>
+    </tr>
+    <tr>
+      <th>verbose</th>
+      <td><p>logical; do you want informative messages?</p></td>
+    </tr>
+    </table>
+    
+    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>This function is meant to be used internally. Only use when debugging.</p>
+    <p><code>tbl_df</code> of the created customer record</p>
+    
+    <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
+
+    <p>You must provide at least one of the following values in your request 
+to this endpoint:</p><ul>
+<li><p><code>given_name</code></p></li>
+<li><p><code>family_name</code></p></li>
+<li><p><code>company_name</code></p></li>
+<li><p><code>email_address</code></p></li>
+<li><p><code>phone_number</code></p></li>
+</ul><p>This endpoint does not accept an idempotency key. If you accidentally create a 
+duplicate customer, you can delete it with the DeleteCustomer endpoint. Required 
+permissions: <code>CUSTOMERS_WRITE</code>.</p>
     
 
+    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
+    <pre class="examples"><span class='co'># NOT RUN {</span>
+<span class='no'>new_cust_data</span> <span class='kw'>&lt;-</span> <span class='fu'>list</span>(<span class='kw'>given_name</span> <span class='kw'>=</span> <span class='st'>"API Test"</span>,
+                      <span class='kw'>family_name</span> <span class='kw'>=</span> <span class='st'>"API Test"</span>,
+                      <span class='kw'>note</span> <span class='kw'>=</span> <span class='st'>"This customer was created by the API as a test"</span>)
+<span class='no'>this_customer</span> <span class='kw'>&lt;-</span> <span class='fu'>sq_create_customer</span>(<span class='no'>new_cust_data</span>)
+<span class='co'># }</span></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
+      <li><a href="#arguments">Arguments</a></li>
       
-      <li><a href="#note">Note</a></li>
-          </ul>
+      <li><a href="#value">Value</a></li>
+
+      <li><a href="#details">Details</a></li>
+      
+      <li><a href="#examples">Examples</a></li>
+    </ul>
 
   </div>
 </div>

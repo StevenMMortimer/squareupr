@@ -96,3 +96,19 @@ cpf <- function(...) cat(paste0(sprintf(...), "\n"))
 mpf <- function(...) message(sprintf(...))
 wpf <- function(...) warning(sprintf(...), call. = FALSE)
 spf <- function(...) stop(sprintf(...), call. = FALSE)
+
+#' Catches httr errors and prints them nicely
+#' 
+#' @importFrom httr http_error content
+#' @note This function is meant to be used internally. Only use when debugging.
+#' @keywords internal
+#' @export
+catch_errors <- function(httr_response){
+  if(http_error(httr_response)){
+    response_parsed <- content(httr_response, "parsed")
+    stop(sprintf("%s - %s", 
+                 response_parsed$errors[[1]]$code,
+                 response_parsed$errors[[1]]$detail) , call. = FALSE)
+  }
+  return(invisible(FALSE))
+}
