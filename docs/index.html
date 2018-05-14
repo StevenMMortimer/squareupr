@@ -179,8 +179,7 @@ devtools<span class="op">::</span><span class="kw"><a href="http://www.rdocument
 <div id="transactions" class="section level3">
 <h3 class="hasAnchor">
 <a href="#transactions" class="anchor"></a>Transactions</h3>
-<p>With the v2 Locations endpoint you can pull information regarding all locations.<br>
-One thing to note is that it is important to first pull down the location details for your business because this is required when searching for transactions and items to analyze. When listing transactions the timeframe defaults to the previous day using <code>Sys.Date() - 1</code>. The <code>tenders</code> field lists all methods of payment used to pay in the transaction.</p>
+<p>Transactions are organized by location. With the v2 Locations endpoint you can pull information regarding all locations first to obtain the location IDs. Then with the <code><a href="reference/sq_list_transactions.html">sq_list_transactions()</a></code> function you can provide the location and timeframe to search. The function defaults to pulling transactions from the previous day using <code>Sys.Date() - 1</code>. Once you obtain the transactions the <code>tenders</code> field lists all methods of payment used to pay in the transaction.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># list all locations</span>
 our_locations &lt;-<span class="st"> </span><span class="kw"><a href="reference/sq_list_locations.html">sq_list_locations</a></span>()
 our_transactions &lt;-<span class="st"> </span><span class="kw"><a href="reference/sq_list_transactions.html">sq_list_transactions</a></span>(<span class="dt">location =</span> our_locations<span class="op">$</span>id[<span class="dv">2</span>], 
@@ -231,7 +230,7 @@ our_customers <span class="op">%&gt;%</span><span class="st"> </span><span class
 <span class="co"># filter to the groups designated automatically by Square</span>
 <span class="kw"><a href="reference/sq_extract_cust_groups.html">sq_extract_cust_groups</a></span>(our_customers) <span class="op">%&gt;%</span>
 <span class="st">  </span><span class="kw">filter</span>(<span class="kw">grepl</span>(<span class="st">"^CQ689YH4KCJMY"</span>, groups.id))
-<span class="co">#&gt; # A tibble: 13,445 x 3</span>
+<span class="co">#&gt; # A tibble: 13,444 x 3</span>
 <span class="co">#&gt;    id                         groups.id                 groups.name       </span>
 <span class="co">#&gt;    &lt;chr&gt;                      &lt;chr&gt;                     &lt;chr&gt;             </span>
 <span class="co">#&gt;  1 M1RBDFRK7S1Q1EP6EZFJFV3CBW CQ689YH4KCJMY.LOYALTY_ALL Loyalty Participa…</span>
@@ -244,7 +243,7 @@ our_customers <span class="op">%&gt;%</span><span class="st"> </span><span class
 <span class="co">#&gt;  8 FKEMR8KZCN3BH98RV78PKHKQ1R CQ689YH4KCJMY.CHURN_RISK  Lapsed            </span>
 <span class="co">#&gt;  9 78VMJPJNK959AHH0ZQPXDXEG3C CQ689YH4KCJMY.LOYALTY_ALL Loyalty Participa…</span>
 <span class="co">#&gt; 10 QASM1G54VX0QN2S15YS6KHEFCC CQ689YH4KCJMY.LOYAL       Regulars          </span>
-<span class="co">#&gt; # ... with 13,435 more rows</span></code></pre></div>
+<span class="co">#&gt; # ... with 13,434 more rows</span></code></pre></div>
 </div>
 </div>
 <div id="credits" class="section level2">

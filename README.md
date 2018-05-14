@@ -70,8 +70,7 @@ OAuth 2.0 credentials will be cached locally in a file entitled `".httr-oauth-sq
 
 ### Transactions
 
-With the v2 Locations endpoint you can pull information regarding all locations.
-One thing to note is that it is important to first pull down the location details for your business because this is required when searching for transactions and items to analyze. When listing transactions the timeframe defaults to the previous day using `Sys.Date() - 1`. The `tenders` field lists all methods of payment used to pay in the transaction.
+Transactions are organized by location. With the v2 Locations endpoint you can pull information regarding all locations first to obtain the location IDs. Then with the `sq_list_transactions()` function you can provide the location and timeframe to search. The function defaults to pulling transactions from the previous day using `Sys.Date() - 1`. Once you obtain the transactions the `tenders` field lists all methods of payment used to pay in the transaction.
 
 ``` r
 # list all locations
@@ -126,7 +125,7 @@ our_customers %>% select(id, created_at, updated_at,
 # filter to the groups designated automatically by Square
 sq_extract_cust_groups(our_customers) %>%
   filter(grepl("^CQ689YH4KCJMY", groups.id))
-#> # A tibble: 13,445 x 3
+#> # A tibble: 13,444 x 3
 #>    id                         groups.id                 groups.name       
 #>    <chr>                      <chr>                     <chr>             
 #>  1 M1RBDFRK7S1Q1EP6EZFJFV3CBW CQ689YH4KCJMY.LOYALTY_ALL Loyalty Participa…
@@ -139,7 +138,7 @@ sq_extract_cust_groups(our_customers) %>%
 #>  8 FKEMR8KZCN3BH98RV78PKHKQ1R CQ689YH4KCJMY.CHURN_RISK  Lapsed            
 #>  9 78VMJPJNK959AHH0ZQPXDXEG3C CQ689YH4KCJMY.LOYALTY_ALL Loyalty Participa…
 #> 10 QASM1G54VX0QN2S15YS6KHEFCC CQ689YH4KCJMY.LOYAL       Regulars          
-#> # ... with 13,435 more rows
+#> # ... with 13,434 more rows
 ```
 
 Credits

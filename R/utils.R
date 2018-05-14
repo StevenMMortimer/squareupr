@@ -74,3 +74,25 @@ sq_extract_cust_groups <- function(customer_data){
   return(res)
 }
 
+#' Convenience Function to Map NULL to NA
+#' 
+#' This function checks if a value is null and if so, returns NA. This is helpful 
+#' when pulling information from lists and formatting to a \code{data.frame} structure 
+#' where new rows cannot be NULL.
+#'
+#' @param x object; to be checked if NULL that returns NA if it is NULL
+#' @return object
+#' @examples
+#' \dontrun{
+#' sq_catch_null(3)
+#' sq_catch_null(NULL)
+#' sq_catch_null(list(x=1, y=2))
+#' }
+#' @export
+sq_catch_null <- function(x){
+  if(is.null(x)){
+    NA
+  } else {
+    x
+  }
+}

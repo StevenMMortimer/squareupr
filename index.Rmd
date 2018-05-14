@@ -92,11 +92,12 @@ OAuth 2.0 credentials will be cached locally in a file entitled `".httr-oauth-sq
 in the current working directory so that a new token is not needed each session.
 
 ### Transactions
-With the v2 Locations endpoint you can pull information regarding all locations.  
-One thing to note is that it is important to first pull down the location details for 
-your business because this is required when searching for transactions and items to analyze. 
-When listing transactions the timeframe defaults to the previous day using `Sys.Date() - 1`.
-The `tenders` field lists all methods of payment used to pay in the transaction.
+Transactions are organized by location. With the v2 Locations endpoint you can pull 
+information regarding all locations first to obtain the location IDs. Then with the 
+`sq_list_transactions()` function you can provide the location and timeframe to search. 
+The function defaults to pulling transactions from the previous day using `Sys.Date() - 1`. 
+Once you obtain the transactions the `tenders` field lists all methods of payment 
+used to pay in the transaction.
 
 ```{r transactions-by-location}
 # list all locations
