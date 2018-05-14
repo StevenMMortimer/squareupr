@@ -228,17 +228,8 @@ our_customers <span class="op">%&gt;%</span><span class="st"> </span><span class
 <span class="co">#&gt; # ... with 11,776 more rows</span>
 
 <span class="co"># show the groups that each customer belongs to</span>
-our_customers <span class="op">%&gt;%</span><span class="st"> </span>
-<span class="st">  </span><span class="kw">select</span>(id, groups) <span class="op">%&gt;%</span>
-<span class="st">  </span><span class="co"># drop the customers with NULL groups field</span>
-<span class="st">  </span><span class="kw">mutate</span>(<span class="dt">groups_cnt =</span> <span class="kw">sapply</span>(our_customers<span class="op">$</span>groups, length)) <span class="op">%&gt;%</span>
-<span class="st">  </span><span class="kw">filter</span>(groups_cnt <span class="op">&gt;</span><span class="st"> </span><span class="dv">0</span>) <span class="op">%&gt;%</span>
-<span class="st">  </span><span class="kw">unnest</span>(groups) <span class="op">%&gt;%</span>
-<span class="st">  </span><span class="kw">select</span>(id, groups) <span class="op">%&gt;%</span>
-<span class="st">  </span><span class="kw">transpose</span>() <span class="op">%&gt;%</span>
-<span class="st">  </span><span class="co"># convert the groups id and name into two separate columns</span>
-<span class="st">  </span><span class="kw">map_df</span>(<span class="op">~</span><span class="kw">as_tibble</span>(<span class="kw">t</span>(<span class="kw">unlist</span>(.)))) <span class="op">%&gt;%</span>
-<span class="st">  </span><span class="co"># filter to the groups designated automatically by Square</span>
+<span class="co"># filter to the groups designated automatically by Square</span>
+<span class="kw"><a href="reference/sq_extract_cust_groups.html">sq_extract_cust_groups</a></span>(our_customers) <span class="op">%&gt;%</span>
 <span class="st">  </span><span class="kw">filter</span>(<span class="kw">grepl</span>(<span class="st">"^CQ689YH4KCJMY"</span>, groups.id))
 <span class="co">#&gt; # A tibble: 13,445 x 3</span>
 <span class="co">#&gt;    id                         groups.id                 groups.name       </span>

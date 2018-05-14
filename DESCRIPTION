@@ -24,6 +24,7 @@ LazyData: true
 Imports:
     httr,
     dplyr,
+    tidyr,
     purrr,
     lubridate
 Suggests:

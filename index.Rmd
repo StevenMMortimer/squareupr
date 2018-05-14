@@ -121,17 +121,8 @@ our_customers %>% select(id, created_at, updated_at,
                          given_name, family_name, preferences, groups)
 
 # show the groups that each customer belongs to
-our_customers %>% 
-  select(id, groups) %>%
-  # drop the customers with NULL groups field
-  mutate(groups_cnt = sapply(our_customers$groups, length)) %>%
-  filter(groups_cnt > 0) %>%
-  unnest(groups) %>%
-  select(id, groups) %>%
-  transpose() %>%
-  # convert the groups id and name into two separate columns
-  map_df(~as_tibble(t(unlist(.)))) %>%
-  # filter to the groups designated automatically by Square
+# filter to the groups designated automatically by Square
+sq_extract_cust_groups(our_customers) %>%
   filter(grepl("^CQ689YH4KCJMY", groups.id))
 ```
 
