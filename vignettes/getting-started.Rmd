@@ -1,7 +1,7 @@
 ---
 title: "Getting Started"
 author: "Steven M. Mortimer"
-date: "2018-05-11"
+date: "2018-05-18"
 output:
   rmarkdown::html_vignette:
     toc: true
@@ -23,38 +23,80 @@ knitr::opts_chunk$set(
 )
 ```
 
+### Authenticate
 First, load the `squareupr` package and login. There are two ways to authenticate: 
 1) OAuth 2.0 or a 2) Personal Access Token (PAT). It is recommended to use OAuth 2.0 so that 
-your PAT does not have to be shared/embedded within scripts. User credentials will 
-be stored in locally cached file entitled ".httr-oauth-squareupr" in the current working 
-directory.
+your PAT does not have to be shared/embedded within scripts. However, note that before 
+using OAuth 2.0 authentication it is necessary that you set up your own Connected App 
+in the Square dashboard. An App ID and App Secret will be provided, then you will 
+be able to plug into your script like so: 
+
+```{r other-params, eval=FALSE}
+options(squareupr.app_id = "sq0-99-thisisatest99connected33app22id")
+options(squareupr.app_secret = "sq0-Th1s1sMyAppS3cr3t")
+sq_auth()
+```
+
+OAuth 2.0 User credentials will be stored in locally cached file entitled ".httr-oauth-squareupr" 
+in the current working directory.
 
 ```{r auth, include = FALSE}
-suppressWarnings(suppressMessages(library(dplyr)))
+library(tidyverse)
 library(squareupr)
 settings <- readRDS(here::here("tests", "testthat", "squareupr_test_settings.rds"))
 suppressMessages(sq_auth(personal_access_token = settings$personal_access_token, 
                          verbose = FALSE))
 ```
 
-```{r load-package, eval=FALSE}
-suppressWarnings(suppressMessages(library(dplyr)))
+```{r, eval=FALSE}
+library(tidyverse)
 library(squareupr)
-sf_auth(personal_access_token = "sq-Th1s1sMyPers0nalAcessT0ken")
+
+# Using Personal Access Token (PAT)
+sq_auth(personal_access_token = "sq-Th1s1sMyPers0nalAcessT0ken")
+
+# Using OAuth 2.0 authentication
+sq_auth()
 ```
 
-NOTE: In order to use OAuth 2.0 authentication it is necessary that you setup your 
-own Connected App in the Square dashboard. An App ID and App Secret will be provided, 
-then you will be able to plug into your script like so:
+### Get Transactions
+Transactions are organized by location. With the v2 Locations endpoint you can pull 
+information regarding all locations first to obtain the location IDs. Then with the 
+`sq_list_transactions()` function you can provide the location and timeframe to search. 
+The function defaults to pulling transactions from the previous day using `Sys.Date() - 1`. 
+Once you obtain the transactions the `tenders` field lists all methods of payment 
+used to pay in the transaction.
 
-```{r other-params, eval=FALSE}
-options(squareupr.app_id = "sq0-99-thisisatest99connected33app22id")
-options(squareupr.app_secret = "sq0-Th1s1sMyAppS3cr3t")
+```{r transactions-by-location}
+# list all locations
+our_locations <- sq_list_locations()
+our_transactions <- sq_list_transactions(location = our_locations$id[2], 
+                                         begin_time = as.Date('2018-05-11'), 
+                                         end_time = as.Date('2018-05-12'))
+our_transactions
+```
 
-sq_auth()
+### Get Customers
+Once you pull data about transactions you can take the customer_id from the transaction 
+`tenders` field and match that up with customer details. In Square customers can 
+be placed into groups that allow for the analysis of transactions at a group-level.
+
+```{r customers}
+# list all customers
+our_customers <- sq_list_customers()
+our_customers$given_name <- "{HIDDEN}"
+our_customers$family_name <- "{HIDDEN}"
+our_customers %>% select(id, created_at, updated_at, 
+                         given_name, family_name, preferences, groups)
+
+# show the groups that each customer belongs to
+# filter to the groups designated automatically by Square
+sq_extract_cust_groups(our_customers) %>%
+  filter(grepl("^CQ689YH4KCJMY", groups.id))
 ```
 
 ### Check out the Tests
 The **squareupr** package has quite a bit of unit test coverage to track any 
 changes made between newly released versions of the Square APIs. These tests are 
-great source of examples for how to interect with the API.
+great source of examples for how to interect with the API. The tests are available 
+<a target="_blank" href="https://github.com/StevenMMortimer/squareupr/tree/master/tests/testthat">here</a>.
