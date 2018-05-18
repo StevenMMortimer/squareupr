@@ -34,8 +34,8 @@ knitr::opts_chunk$set(
   * [Installation](#installation)
   * [Usage](#usage)
     * [Authenticate](#authenticate)
-    * [Customers](#customers)
     * [Transactions](#transactions)
+    * [Customers](#customers)
   * [Credits](#credits)
   * [More Information](#more-information)
 

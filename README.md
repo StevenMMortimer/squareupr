@@ -21,8 +21,8 @@ Table of Contents
 -   [Installation](#installation)
 -   [Usage](#usage)
     -   [Authenticate](#authenticate)
-    -   [Customers](#customers)
     -   [Transactions](#transactions)
+    -   [Customers](#customers)
 -   [Credits](#credits)
 -   [More Information](#more-information)
 
@@ -106,7 +106,7 @@ our_customers$given_name <- "{HIDDEN}"
 our_customers$family_name <- "{HIDDEN}"
 our_customers %>% select(id, created_at, updated_at, 
                          given_name, family_name, preferences, groups)
-#> # A tibble: 11,786 x 7
+#> # A tibble: 11,796 x 7
 #>    id     created_at  updated_at given_name family_name preferences groups
 #>    <chr>  <chr>       <chr>      <chr>      <chr>       <list>      <list>
 #>  1 M1RBD… 2017-01-09… 2018-02-0… {HIDDEN}   {HIDDEN}    <list [1]>  <list…
@@ -119,7 +119,7 @@ our_customers %>% select(id, created_at, updated_at,
 #>  8 ECVG5… 2017-09-30… 2018-03-1… {HIDDEN}   {HIDDEN}    <list [1]>  <list…
 #>  9 H8BZA… 2017-07-06… 2018-02-1… {HIDDEN}   {HIDDEN}    <list [1]>  <list…
 #> 10 ZCBZJ… 2018-01-16… 2018-03-0… {HIDDEN}   {HIDDEN}    <list [1]>  <list…
-#> # ... with 11,776 more rows
+#> # ... with 11,786 more rows
 
 # show the groups that each customer belongs to
 # filter to the groups designated automatically by Square
@@ -135,7 +135,7 @@ sq_extract_cust_groups(our_customers) %>%
 #>  5 MBSJA4QV4WX6N2XV8WV9VJJTG8 CQ689YH4KCJMY.REACHABLE   Reachable         
 #>  6 ZCBZJ234217KTV812WX4DP2404 CQ689YH4KCJMY.REACHABLE   Reachable         
 #>  7 FKEMR8KZCN3BH98RV78PKHKQ1R CQ689YH4KCJMY.LOYALTY_ALL Loyalty Participa…
-#>  8 FKEMR8KZCN3BH98RV78PKHKQ1R CQ689YH4KCJMY.CHURN_RISK  Lapsed            
+#>  8 FKEMR8KZCN3BH98RV78PKHKQ1R CQ689YH4KCJMY.LOYAL       Regulars          
 #>  9 78VMJPJNK959AHH0ZQPXDXEG3C CQ689YH4KCJMY.LOYALTY_ALL Loyalty Participa…
 #> 10 QASM1G54VX0QN2S15YS6KHEFCC CQ689YH4KCJMY.LOYAL       Regulars          
 #> # ... with 13,434 more rows

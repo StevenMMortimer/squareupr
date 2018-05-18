@@ -135,8 +135,8 @@
 <a href="#usage">Usage</a>
 <ul>
 <li><a href="#authenticate">Authenticate</a></li>
-<li><a href="#customers">Customers</a></li>
 <li><a href="#transactions">Transactions</a></li>
+<li><a href="#customers">Customers</a></li>
 </ul>
 </li>
 <li><a href="#credits">Credits</a></li>
@@ -211,7 +211,7 @@ our_customers<span class="op">$</span>given_name &lt;-<span class="st"> "{HIDDEN
 our_customers<span class="op">$</span>family_name &lt;-<span class="st"> "{HIDDEN}"</span>
 our_customers <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">select</span>(id, created_at, updated_at, 
                          given_name, family_name, preferences, groups)
-<span class="co">#&gt; # A tibble: 11,786 x 7</span>
+<span class="co">#&gt; # A tibble: 11,796 x 7</span>
 <span class="co">#&gt;    id     created_at  updated_at given_name family_name preferences groups</span>
 <span class="co">#&gt;    &lt;chr&gt;  &lt;chr&gt;       &lt;chr&gt;      &lt;chr&gt;      &lt;chr&gt;       &lt;list&gt;      &lt;list&gt;</span>
 <span class="co">#&gt;  1 M1RBD… 2017-01-09… 2018-02-0… {HIDDEN}   {HIDDEN}    &lt;list [1]&gt;  &lt;list…</span>
@@ -224,7 +224,7 @@ our_customers <span class="op">%&gt;%</span><span class="st"> </span><span class
 <span class="co">#&gt;  8 ECVG5… 2017-09-30… 2018-03-1… {HIDDEN}   {HIDDEN}    &lt;list [1]&gt;  &lt;list…</span>
 <span class="co">#&gt;  9 H8BZA… 2017-07-06… 2018-02-1… {HIDDEN}   {HIDDEN}    &lt;list [1]&gt;  &lt;list…</span>
 <span class="co">#&gt; 10 ZCBZJ… 2018-01-16… 2018-03-0… {HIDDEN}   {HIDDEN}    &lt;list [1]&gt;  &lt;list…</span>
-<span class="co">#&gt; # ... with 11,776 more rows</span>
+<span class="co">#&gt; # ... with 11,786 more rows</span>
 
 <span class="co"># show the groups that each customer belongs to</span>
 <span class="co"># filter to the groups designated automatically by Square</span>
@@ -240,7 +240,7 @@ our_customers <span class="op">%&gt;%</span><span class="st"> </span><span class
 <span class="co">#&gt;  5 MBSJA4QV4WX6N2XV8WV9VJJTG8 CQ689YH4KCJMY.REACHABLE   Reachable         </span>
 <span class="co">#&gt;  6 ZCBZJ234217KTV812WX4DP2404 CQ689YH4KCJMY.REACHABLE   Reachable         </span>
 <span class="co">#&gt;  7 FKEMR8KZCN3BH98RV78PKHKQ1R CQ689YH4KCJMY.LOYALTY_ALL Loyalty Participa…</span>
-<span class="co">#&gt;  8 FKEMR8KZCN3BH98RV78PKHKQ1R CQ689YH4KCJMY.CHURN_RISK  Lapsed            </span>
+<span class="co">#&gt;  8 FKEMR8KZCN3BH98RV78PKHKQ1R CQ689YH4KCJMY.LOYAL       Regulars          </span>
 <span class="co">#&gt;  9 78VMJPJNK959AHH0ZQPXDXEG3C CQ689YH4KCJMY.LOYALTY_ALL Loyalty Participa…</span>
 <span class="co">#&gt; 10 QASM1G54VX0QN2S15YS6KHEFCC CQ689YH4KCJMY.LOYAL       Regulars          </span>
 <span class="co">#&gt; # ... with 13,434 more rows</span></code></pre></div>
