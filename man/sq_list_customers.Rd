@@ -20,7 +20,9 @@ will automatically paginate results.}
 Lists a business's customers.
 }
 \details{
-Required permissions: \code{CUSTOMERS_READ}
+Required permissions: \code{CUSTOMERS_READ}. Note, The \code{ListCustomers} 
+endpoint actually doesn't list \code{instant profiles} (profiles created via Square, 
+not explicitly by you).
 }
 \examples{
 \dontrun{

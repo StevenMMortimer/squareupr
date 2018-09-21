@@ -38,8 +38,13 @@ our_transactions <- sq_list_transactions(location = our_locations$id[2],
 our_transactions
 
 ## ----customers-----------------------------------------------------------
-# list all customers
-our_customers <- sq_list_customers()
+# list customers created in the last 90 days
+created_start <- format(Sys.Date()-90, '%Y-%m-%dT00:00:00-00:00')
+created_end <- format(Sys.Date(), '%Y-%m-%dT00:00:00-00:00')
+our_customers <- sq_search_customers(query = list(filter=
+                                                    list(created_at=
+                                                           list(start_at=created_start,
+                                                                end_at=created_end))))
 our_customers$given_name <- "{HIDDEN}"
 our_customers$family_name <- "{HIDDEN}"
 our_customers %>% select(id, created_at, updated_at, 

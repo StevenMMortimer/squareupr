@@ -26,7 +26,7 @@ knitr::opts_chunk$set(
   * v2 Locations Endpoint (`sq_list_locations()`, `sq_get_location()`)
   * v2 Transactions Endpoint (`sq_list_transactions()`, `sq_get_transaction()`)
   * v2 Customers Endpoint - CRUD (Create, Retrieve, Update, Delete) methods for customers with: 
-    * `sq_list_customers()`, `sq_get_customer()`, `sq_create_customer()`, `sq_update_customer()`, `sq_delete_customer()`
+    * `sq_list_customers()`, `sq_search_customers()`, `sq_get_customer()`, `sq_create_customer()`, `sq_update_customer()`, `sq_delete_customer()`
   * v1 Payments Endpoint (`sq_list_payments()`, `sq_get_payment()`)
   * v1 Items Endpoint - CRUD (Create, Retrieve, Update, Delete) methods for items with: 
     * `sq_list_items()`, `sq_get_item()`, `sq_create_item()`, `sq_update_item()`, `sq_delete_item()`
@@ -114,8 +114,13 @@ Once you pull data about transactions you can take the customer_id from the tran
 be placed into groups that allow for the analysis of transactions at a group-level.
 
 ```{r customers}
-# list all customers
-our_customers <- sq_list_customers()
+# list customers created in the last 90 days
+created_start <- format(Sys.Date()-90, '%Y-%m-%dT00:00:00-00:00')
+created_end <- format(Sys.Date(), '%Y-%m-%dT00:00:00-00:00')
+our_customers <- sq_search_customers(query = list(filter=
+                                                    list(created_at=
+                                                           list(start_at=created_start,
+                                                                end_at=created_end))))
 our_customers$given_name <- "{HIDDEN}"
 our_customers$family_name <- "{HIDDEN}"
 our_customers %>% select(id, created_at, updated_at, 

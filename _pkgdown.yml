@@ -42,6 +42,7 @@ reference:
     contents:
       - '`sq_get_customer`'
       - '`sq_list_customers`'
+      - '`sq_search_customers`'
       - '`sq_create_customer`'
       - '`sq_delete_customer`'
       - '`sq_update_customer`'

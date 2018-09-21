@@ -43,13 +43,15 @@ sq_get_customer <- function(customer_id,
 #' @template cursor
 #' @template verbose
 #' @return \code{tbl_df} of customers
-#' @details Required permissions: \code{CUSTOMERS_READ}
+#' @details Required permissions: \code{CUSTOMERS_READ}. Note, The \code{ListCustomers} 
+#' endpoint actually doesn't list \code{instant profiles} (profiles created via Square, 
+#' not explicitly by you).
 #' @examples
 #' \dontrun{
 #' my_customers <- sq_list_customers()
 #' }
 #' @export
-sq_list_customers <- function(cursor = NULL, 
+sq_list_customers <- function(cursor = NULL,
                               verbose = FALSE){
   
   endpoint_url <- parse_url(sprintf("%s/v2/customers", 
@@ -78,6 +80,73 @@ sq_list_customers <- function(cursor = NULL,
   return(resultset)
 }
 
+#' Search Customers
+#' 
+#' Searches the customer profiles associated with a Square account. Calling SearchCustomers 
+#' without an explicit query parameter returns all customer profiles ordered alphabetically 
+#' based on given_name and family_name.
+#' 
+#' @importFrom dplyr as_tibble bind_rows
+#' @importFrom purrr modify_if map_df
+#' @importFrom httr content add_headers parse_url build_url
+#' @template cursor
+#' @param limit integer; A limit on the number of results to be returned in a single 
+#' page. The limit is advisory - the implementation may return more or fewer results. 
+#' If the supplied limit is negative, zero, or is higher than the maximum limit of 
+#' 1,000, it will be ignored.
+#' @param query list; A list containing \code{filter} and \code{sort} elements. 
+#' Calling SearchCustomers without an explicit query parameter will return all 
+#' customers ordered alphabetically based on \code{given_name} and \code{family_name}.
+#' @template verbose
+#' @return \code{tbl_df} of customers
+#' @details Required permissions: \code{CUSTOMERS_READ}
+#' @examples
+#' \dontrun{
+#' my_customers <- sq_search_customers()
+#' }
+#' @export
+sq_search_customers <- function(cursor = NULL, 
+                                limit = NULL, 
+                                query = NULL,
+                                verbose = FALSE){
+  
+  endpoint_url <- parse_url(sprintf("%s/v2/customers/search", 
+                                    getOption("squareupr.api_base_url")))
+  
+  body_params <- NULL
+  if(!is.null(cursor)){
+    body_params$cursor <- cursor
+  }
+  if(!is.null(limit)){
+    body_params$limit <- limit
+  }
+  if(!is.null(query)){
+    body_params$query <- query
+  }
+  
+  httr_url <- build_url(endpoint_url)  
+  
+  if(verbose) message(httr_url)
+  
+  httr_response <- rPOST(httr_url, add_headers(Authorization = sprintf("Bearer %s", sq_token()), 
+                                               Accept = "application/json"), 
+                         body = body_params, 
+                         encode = 'json')
+  catch_errors_connect_v2(httr_response)
+  response_parsed <- content(httr_response, "parsed")
+  resultset <- response_parsed$customers %>%
+    map_df(~as_tibble(modify_if(., ~(length(.x) > 1 | is.list(.x)), list)))
+  
+  # check whether it has another page of records and continue to pull if so
+  if(!is.null(response_parsed$cursor)){
+    next_records <- sq_search_customers(cursor=response_parsed$cursor, 
+                                        limit=limit, 
+                                        query=query)
+    resultset <- bind_rows(resultset, next_records)
+  }
+  
+  return(resultset)
+}
 
 #' Create Customer
 #' 

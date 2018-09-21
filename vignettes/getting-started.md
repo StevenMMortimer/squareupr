@@ -86,45 +86,50 @@ be placed into groups that allow for the analysis of transactions at a group-lev
 
 
 ```r
-# list all customers
-our_customers <- sq_list_customers()
+# list customers created in the last 90 days
+created_start <- format(Sys.Date()-90, '%Y-%m-%dT00:00:00-00:00')
+created_end <- format(Sys.Date(), '%Y-%m-%dT00:00:00-00:00')
+our_customers <- sq_search_customers(query = list(filter=
+                                                    list(created_at=
+                                                           list(start_at=created_start,
+                                                                end_at=created_end))))
 our_customers$given_name <- "{HIDDEN}"
 our_customers$family_name <- "{HIDDEN}"
 our_customers %>% select(id, created_at, updated_at, 
                          given_name, family_name, preferences, groups)
-#> # A tibble: 11,796 x 7
+#> # A tibble: 8,053 x 7
 #>    id     created_at  updated_at given_name family_name preferences groups
 #>    <chr>  <chr>       <chr>      <chr>      <chr>       <list>      <list>
-#>  1 M1RBD… 2017-01-09… 2018-02-0… {HIDDEN}   {HIDDEN}    <list [1]>  <list…
-#>  2 56EB9… 2017-12-11… 2018-02-0… {HIDDEN}   {HIDDEN}    <list [1]>  <NULL>
-#>  3 Z2HYX… 2017-12-19… 2018-02-0… {HIDDEN}   {HIDDEN}    <list [1]>  <NULL>
-#>  4 017CX… 2017-10-04… 2018-02-0… {HIDDEN}   {HIDDEN}    <list [1]>  <NULL>
-#>  5 58MK9… 2017-11-16… 2018-02-0… {HIDDEN}   {HIDDEN}    <list [1]>  <list…
-#>  6 T5HXZ… 2018-01-02… 2018-02-0… {HIDDEN}   {HIDDEN}    <list [1]>  <NULL>
-#>  7 MBSJA… 2017-05-31… 2017-05-3… {HIDDEN}   {HIDDEN}    <list [1]>  <list…
-#>  8 ECVG5… 2017-09-30… 2018-03-1… {HIDDEN}   {HIDDEN}    <list [1]>  <list…
-#>  9 H8BZA… 2017-07-06… 2018-02-1… {HIDDEN}   {HIDDEN}    <list [1]>  <list…
-#> 10 ZCBZJ… 2018-01-16… 2018-03-0… {HIDDEN}   {HIDDEN}    <list [1]>  <list…
-#> # ... with 11,786 more rows
+#>  1 BCKGB… 2018-08-14… 2018-08-3… {HIDDEN}   {HIDDEN}    <list [1]>  <list…
+#>  2 YMZQ5… 2018-07-05… 2018-07-0… {HIDDEN}   {HIDDEN}    <list [1]>  <list…
+#>  3 KBZVT… 2018-08-31… 2018-08-3… {HIDDEN}   {HIDDEN}    <list [1]>  <list…
+#>  4 0M4VW… 2018-07-24… 2018-07-2… {HIDDEN}   {HIDDEN}    <list [1]>  <list…
+#>  5 K9JR3… 2018-07-10… 2018-07-1… {HIDDEN}   {HIDDEN}    <list [1]>  <list…
+#>  6 E735V… 2018-09-10… 2018-09-1… {HIDDEN}   {HIDDEN}    <list [1]>  <list…
+#>  7 VDZZ7… 2018-07-25… 2018-07-2… {HIDDEN}   {HIDDEN}    <list [1]>  <list…
+#>  8 RWTS7… 2018-09-03… 2018-09-0… {HIDDEN}   {HIDDEN}    <list [1]>  <list…
+#>  9 RFJP4… 2018-08-25… 2018-08-2… {HIDDEN}   {HIDDEN}    <list [1]>  <list…
+#> 10 T1HZ3… 2018-08-29… 2018-08-2… {HIDDEN}   {HIDDEN}    <list [1]>  <list…
+#> # ... with 8,043 more rows
 
 # show the groups that each customer belongs to
 # filter to the groups designated automatically by Square
 sq_extract_cust_groups(our_customers) %>%
   filter(grepl("^CQ689YH4KCJMY", groups.id))
-#> # A tibble: 13,444 x 3
-#>    id                         groups.id                 groups.name       
-#>    <chr>                      <chr>                     <chr>             
-#>  1 M1RBDFRK7S1Q1EP6EZFJFV3CBW CQ689YH4KCJMY.LOYALTY_ALL Loyalty Participa…
-#>  2 58MK9F1HQ5447D1QZDX60NHTP4 CQ689YH4KCJMY.CHURN_RISK  Lapsed            
-#>  3 58MK9F1HQ5447D1QZDX60NHTP4 CQ689YH4KCJMY.REACHABLE   Reachable         
-#>  4 MBSJA4QV4WX6N2XV8WV9VJJTG8 CQ689YH4KCJMY.LOYALTY_ALL Loyalty Participa…
-#>  5 MBSJA4QV4WX6N2XV8WV9VJJTG8 CQ689YH4KCJMY.REACHABLE   Reachable         
-#>  6 ZCBZJ234217KTV812WX4DP2404 CQ689YH4KCJMY.REACHABLE   Reachable         
-#>  7 FKEMR8KZCN3BH98RV78PKHKQ1R CQ689YH4KCJMY.LOYALTY_ALL Loyalty Participa…
-#>  8 FKEMR8KZCN3BH98RV78PKHKQ1R CQ689YH4KCJMY.LOYAL       Regulars          
-#>  9 78VMJPJNK959AHH0ZQPXDXEG3C CQ689YH4KCJMY.LOYALTY_ALL Loyalty Participa…
-#> 10 QASM1G54VX0QN2S15YS6KHEFCC CQ689YH4KCJMY.LOYAL       Regulars          
-#> # ... with 13,434 more rows
+#> # A tibble: 3,599 x 3
+#>    id                         groups.id                 groups.name      
+#>    <chr>                      <chr>                     <chr>            
+#>  1 BCKGBSEV4555AZ0B09VXG7AFWC CQ689YH4KCJMY.LOYALTY_ALL Loyalty Enrollees
+#>  2 YMZQ5X2SX13W8VXHTSWCXP4R2C CQ689YH4KCJMY.REACHABLE   Reachable        
+#>  3 KBZVT7KPFD1TMN0D1NDAF4XRKC CQ689YH4KCJMY.LOYAL       Regulars         
+#>  4 KBZVT7KPFD1TMN0D1NDAF4XRKC CQ689YH4KCJMY.LOYALTY_ALL Loyalty Enrollees
+#>  5 0M4VWF9NT9532R8E103Z1FWZGC CQ689YH4KCJMY.REACHABLE   Reachable        
+#>  6 VDZZ7XA41S6MYK1GZT75N1FP8M CQ689YH4KCJMY.REACHABLE   Reachable        
+#>  7 RWTS7E3B0X61WY8AW9K6SW2BFR CQ689YH4KCJMY.LOYAL       Regulars         
+#>  8 RWTS7E3B0X61WY8AW9K6SW2BFR CQ689YH4KCJMY.LOYALTY_ALL Loyalty Enrollees
+#>  9 T1HZ36NEAX2YPJGX45BSYM4EKW CQ689YH4KCJMY.LOYALTY_ALL Loyalty Enrollees
+#> 10 56811Y4J2N152VH3SCDJ3N0E4G CQ689YH4KCJMY.REACHABLE   Reachable        
+#> # ... with 3,589 more rows
 ```
 
 ### Check out the Tests
