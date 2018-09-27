@@ -160,7 +160,7 @@ our_customers<span class="op">$</span>given_name &lt;-<span class="st"> "{HIDDEN
 our_customers<span class="op">$</span>family_name &lt;-<span class="st"> "{HIDDEN}"</span>
 our_customers <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">select</span>(id, created_at, updated_at, 
                          given_name, family_name, preferences, groups)
-<span class="co">#&gt; # A tibble: 8,053 x 7</span>
+<span class="co">#&gt; # A tibble: 8,087 x 7</span>
 <span class="co">#&gt;    id     created_at  updated_at given_name family_name preferences groups</span>
 <span class="co">#&gt;    &lt;chr&gt;  &lt;chr&gt;       &lt;chr&gt;      &lt;chr&gt;      &lt;chr&gt;       &lt;list&gt;      &lt;list&gt;</span>
 <span class="co">#&gt;  1 BCKGB… 2018-08-14… 2018-08-3… {HIDDEN}   {HIDDEN}    &lt;list [1]&gt;  &lt;list…</span>
@@ -169,17 +169,17 @@ our_customers <span class="op">%&gt;%</span><span class="st"> </span><span class
 <span class="co">#&gt;  4 0M4VW… 2018-07-24… 2018-07-2… {HIDDEN}   {HIDDEN}    &lt;list [1]&gt;  &lt;list…</span>
 <span class="co">#&gt;  5 K9JR3… 2018-07-10… 2018-07-1… {HIDDEN}   {HIDDEN}    &lt;list [1]&gt;  &lt;list…</span>
 <span class="co">#&gt;  6 E735V… 2018-09-10… 2018-09-1… {HIDDEN}   {HIDDEN}    &lt;list [1]&gt;  &lt;list…</span>
-<span class="co">#&gt;  7 VDZZ7… 2018-07-25… 2018-07-2… {HIDDEN}   {HIDDEN}    &lt;list [1]&gt;  &lt;list…</span>
-<span class="co">#&gt;  8 RWTS7… 2018-09-03… 2018-09-0… {HIDDEN}   {HIDDEN}    &lt;list [1]&gt;  &lt;list…</span>
-<span class="co">#&gt;  9 RFJP4… 2018-08-25… 2018-08-2… {HIDDEN}   {HIDDEN}    &lt;list [1]&gt;  &lt;list…</span>
-<span class="co">#&gt; 10 T1HZ3… 2018-08-29… 2018-08-2… {HIDDEN}   {HIDDEN}    &lt;list [1]&gt;  &lt;list…</span>
-<span class="co">#&gt; # ... with 8,043 more rows</span>
+<span class="co">#&gt;  7 GAG2W… 2018-09-21… 2018-09-2… {HIDDEN}   {HIDDEN}    &lt;list [1]&gt;  &lt;list…</span>
+<span class="co">#&gt;  8 VDZZ7… 2018-07-25… 2018-07-2… {HIDDEN}   {HIDDEN}    &lt;list [1]&gt;  &lt;list…</span>
+<span class="co">#&gt;  9 RWTS7… 2018-09-03… 2018-09-0… {HIDDEN}   {HIDDEN}    &lt;list [1]&gt;  &lt;list…</span>
+<span class="co">#&gt; 10 RFJP4… 2018-08-25… 2018-08-2… {HIDDEN}   {HIDDEN}    &lt;list [1]&gt;  &lt;list…</span>
+<span class="co">#&gt; # ... with 8,077 more rows</span>
 
 <span class="co"># show the groups that each customer belongs to</span>
 <span class="co"># filter to the groups designated automatically by Square</span>
 <span class="kw"><a href="../reference/sq_extract_cust_groups.html">sq_extract_cust_groups</a></span>(our_customers) <span class="op">%&gt;%</span>
 <span class="st">  </span><span class="kw">filter</span>(<span class="kw">grepl</span>(<span class="st">"^CQ689YH4KCJMY"</span>, groups.id))
-<span class="co">#&gt; # A tibble: 3,599 x 3</span>
+<span class="co">#&gt; # A tibble: 3,606 x 3</span>
 <span class="co">#&gt;    id                         groups.id                 groups.name      </span>
 <span class="co">#&gt;    &lt;chr&gt;                      &lt;chr&gt;                     &lt;chr&gt;            </span>
 <span class="co">#&gt;  1 BCKGBSEV4555AZ0B09VXG7AFWC CQ689YH4KCJMY.LOYALTY_ALL Loyalty Enrollees</span>
@@ -192,7 +192,7 @@ our_customers <span class="op">%&gt;%</span><span class="st"> </span><span class
 <span class="co">#&gt;  8 RWTS7E3B0X61WY8AW9K6SW2BFR CQ689YH4KCJMY.LOYALTY_ALL Loyalty Enrollees</span>
 <span class="co">#&gt;  9 T1HZ36NEAX2YPJGX45BSYM4EKW CQ689YH4KCJMY.LOYALTY_ALL Loyalty Enrollees</span>
 <span class="co">#&gt; 10 56811Y4J2N152VH3SCDJ3N0E4G CQ689YH4KCJMY.REACHABLE   Reachable        </span>
-<span class="co">#&gt; # ... with 3,589 more rows</span></code></pre></div>
+<span class="co">#&gt; # ... with 3,596 more rows</span></code></pre></div>
 </div>
 <div id="check-out-the-tests" class="section level3">
 <h3 class="hasAnchor">

@@ -52,7 +52,9 @@ sq_get_payment <- function(location,
 #' @importFrom dplyr as_tibble bind_rows
 #' @importFrom httr content add_headers
 #' @importFrom lubridate as_datetime ymd_hms is.Date
-#' @template location
+#' @param location character; the Square ID or name associated to a location. 
+#' This must be an exact match to the ID or name as found using \link{sq_list_locations}. 
+#' Some endpoints will accept "me" to indicate all locations.
 #' @param begin_time Date or DateTime class; The beginning of the requested reporting 
 #' period. The default value is one day prior at midnight local time (i.e. start of yesterday). 
 #' If the value is a Date (no time component) the time is started at midnight of the date 
@@ -96,12 +98,16 @@ sq_list_payments <- function(location,
                              cursor = NULL,
                              verbose = FALSE){
   
-  this_location <- sq_get_location(location=location)
+  # this endpoint accepts "me" as a location
+  if(location == "me"){
+    this_location <- "me"
+  } else {
+    this_location <- sq_get_location(location=location)$id[1] 
+  }
   
   endpoint_url <- parse_url(sprintf("%s/v1/%s/payments", 
                                     getOption("squareupr.api_base_url"),
-                                    this_location$id[1]))
-  
+                                    this_location))
   query_list <- list() 
     
   if(!is.null(cursor)){
@@ -135,11 +141,11 @@ sq_list_payments <- function(location,
   # check whether it has another page of records and continue to pull if so
   if(!is.null(httr_response$headers$link)){
     this_cursor <- gsub("<(.*)\\?batch_token=(.*)&begin_time.*", "\\2", httr_response$headers$link)
-    next_records <- sq_list_payments(location=location, 
+    next_records <- sq_list_payments(location = location, 
                                      begin_time = begin_time, 
                                      end_time = end_time, 
                                      sort_order = this_sort_order,
-                                     cursor=this_cursor)
+                                     cursor = this_cursor)
     resultset <- bind_rows(resultset, next_records)
   }
   

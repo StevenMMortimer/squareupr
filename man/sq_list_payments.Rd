@@ -10,7 +10,8 @@ sq_list_payments(location, begin_time = Sys.Date() - 1,
 }
 \arguments{
 \item{location}{character; the Square ID or name associated to a location. 
-This must be an exact match to the ID or name as found using \link{sq_list_locations}.}
+This must be an exact match to the ID or name as found using \link{sq_list_locations}. 
+Some endpoints will accept "me" to indicate all locations.}
 
 \item{begin_time}{Date or DateTime class; The beginning of the requested reporting 
 period. The default value is one day prior at midnight local time (i.e. start of yesterday). 
