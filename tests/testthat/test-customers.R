@@ -30,7 +30,7 @@ test_that("sq_search_customers", {
 
 test_that("sq_get_customer", {
   
-  this_customer <- sq_get_customer(customers$id[1])
+  this_customer <- sq_get_customer(searched_customers$id[1])
   expect_is(this_customer, "tbl_df")
   expect_true(all(req_customer_columns %in% names(this_customer)))
 
