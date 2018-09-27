@@ -16,18 +16,21 @@ squareupr_test_settings <- readRDS("squareupr_test_settings.rds")
 squareupr_token <- readRDS("squareupr_token.rds")
 
 test_that("testing OAuth passing token as filename", {
+  skip('Skip because OAuth tokens will need to repeatedly be encrypted and uploaded')
   sq_auth(token = "squareupr_token.rds")
   expect_true(token_available())
   expect_true(!is.null(sq_access_token()))
 })
 
 test_that("testing OAuth passing actual token", {
+  skip('Skip because OAuth tokens will need to repeatedly be encrypted and uploaded')
   sq_auth(token = squareupr_token)
   expect_true(token_available())
   expect_true(!is.null(sq_access_token()))
 })
 
 test_that("testing custom token validation routine", {
+  skip('Skip because OAuth tokens will need to repeatedly be encrypted and uploaded')
   res <- sq_auth_check()
   expect_s3_class(res, "Token2.0")
 })
