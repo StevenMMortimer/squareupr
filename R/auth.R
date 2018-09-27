@@ -193,10 +193,12 @@ sq_auth_check <- function(verbose = FALSE) {
     nows_timestamp <- as.numeric(Sys.time())
     time_diff <- nows_timestamp - expires_at_timestamp
     if(time_diff > 0){
-      sq_auth_refresh(verbose = verbose)
-    } else if(time_diff > 1296000) { 
+      if(time_diff > 1296000) { 
       # per https://docs.connect.squareup.com/api/oauth#post-renew
       stop("The current token in force expired over 15 days ago so it cannot be renewed. Obtain a new token using sq_auth().")
+      } else {
+        sq_auth_refresh(verbose = verbose)
+      }
     } else {
       # don't need to refresh since it hasn't expired yet
     }
