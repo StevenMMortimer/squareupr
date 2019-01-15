@@ -64,6 +64,22 @@ reference:
       - '`sq_create_item`'
       - '`sq_delete_item`'
       - '`sq_update_item`'
+  - title: Discounts Endpoint
+    desc: Functions used for listing, creating, updating, and deleting discounts.
+    contents:
+      - '`sq_list_discounts`'
+  - title: Fees Endpoint
+    desc: Functions used for listing, creating, updating, and deleting fees.
+    contents:
+      - '`sq_list_fees`'
+  - title: Categories Endpoint
+    desc: Functions used for listing, creating, updating, and deleting categories.
+    contents:
+      - '`sq_list_categories`'   
+  - title: Modifiers Endpoint
+    desc: Functions used for listing, creating, updating, and deleting modifiers.
+    contents:
+      - '`sq_list_modifiers`'       
   - title: Package Utilities
     desc: Utility functions that make it easier to use the **squareupr** package
     contents:

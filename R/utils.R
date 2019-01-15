@@ -96,3 +96,65 @@ sq_null_to_na <- function(x){
     x
   }
 }
+
+#' List Records from Connect V1 Endpoints
+#' 
+#' This generic function can be used on the list endpoints of the Connect V1 API. 
+#' Most endpoints have specific functions to accomodate parameters. We use this 
+#' generic to create functiosn for endpoints that do not have parameters we do not 
+#' care about (e.g. begin time, end time, etc.)
+#'
+#' @importFrom dplyr as_tibble bind_rows
+#' @importFrom purrr modify_if map_df
+#' @importFrom httr content add_headers parse_url build_url
+#' @param endpoint character; a string that specifies which endpoint the generic 
+#' method should target
+#' @template location
+#' @template cursor
+#' @template verbose
+#' @return \code{tbl_df} of records from the specified endpoint
+#' @details This function and works for the following Connect V1 endpoints: 
+#' items, categories, fees, discounts, modifier-lists.
+#' @keywords internal
+#' @examples
+#' \dontrun{
+#' our_locations <- sq_list_locations()
+#' our_items <- sq_list_generic_v1(endpoint="items", location=our_locations$id[1])
+#' }
+#' @export
+sq_list_generic_v1 <- function(endpoint, location, cursor=NULL, verbose=FALSE){
+  
+  this_location <- sq_get_location(location = location)
+  
+  endpoint_url <- parse_url(sprintf("%s/v1/%s/%s", 
+                                    getOption("squareupr.api_base_url"), 
+                                    this_location$id[1], 
+                                    endpoint))
+  if (!is.null(cursor)) {
+    endpoint_url$query <- list(batch_token = cursor)
+  }
+  
+  httr_url <- build_url(endpoint_url)
+  
+  if (verbose) 
+    message(httr_url)
+  
+  httr_response <- rGET(httr_url, 
+                        add_headers(Authorization = sprintf("Bearer %s", sq_token()),
+                                    Accept = "application/json"))
+  catch_errors_connect_v1(httr_response)
+  response_parsed <- content(httr_response, "parsed")
+  
+  resultset <- response_parsed %>% 
+    map_df(~as_tibble(modify_if(., ~(length(.x) > 1 | is.list(.x)), list)))
+  
+  if (!is.null(httr_response$headers$link)) {
+    this_cursor <- gsub("<(.*)\\?batch_token=(.*).*", "\\2", 
+                        httr_response$headers$link)
+    next_records <- sq_list_generic_v1(endpoint=endpoint, location=location, 
+                                       cursor=this_cursor, verbose=verbose)
+    resultset <- bind_rows(resultset, next_records)
+  }
+  
+  return(resultset)
+}

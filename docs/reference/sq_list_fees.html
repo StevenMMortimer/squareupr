@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Changelog • squareupr</title>
+<title>List Fees — sq_list_fees • squareupr</title>
 
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script>
@@ -30,7 +30,9 @@
 
 
 
-<meta property="og:title" content="Changelog" />
+<meta property="og:title" content="List Fees — sq_list_fees" />
+
+<meta property="og:description" content="Lists all of a location's fees." />
 
 <meta property="og:image" content="https://stevenmmortimer.github.io/squareupr/logo.png" />
 <meta name="twitter:card" content="summary" />
@@ -59,7 +61,7 @@
   </head>
 
   <body>
-    <div class="container template-news">
+    <div class="container template-reference-topic">
       <header>
       <div class="navbar navbar-default navbar-fixed-top" role="navigation">
   <div class="container">
@@ -127,50 +129,60 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-      <h1>Changelog <small></small></h1>
-      <small>Source: <a href='https://github.com/StevenMMortimer/squareupr/blob/master/NEWS.md'><code>NEWS.md</code></a></small>
+    <h1>List Fees</h1>
+    <small class="dont-index">Source: <a href='https://github.com/StevenMMortimer/squareupr/blob/master/R/fees.R'><code>R/fees.R</code></a></small>
+    <div class="hidden name"><code>sq_list_fees.Rd</code></div>
     </div>
 
-    <div id="squareupr-0009000" class="section level2">
-<h2 class="hasAnchor">
-<a href="#squareupr-0009000" class="anchor"></a>squareupr 0.0.0.9000</h2>
-<div id="features" class="section level3">
-<h3 class="hasAnchor">
-<a href="#features" class="anchor"></a>Features</h3>
-<ul>
-<li>OAuth 2.0 (Single sign-on) and Personal Access Token Authentication methods (<code><a href="../reference/sq_auth.html">sq_auth()</a></code>)</li>
-<li>v2 Locations Endpoint (<code><a href="../reference/sq_list_locations.html">sq_list_locations()</a></code>, <code><a href="../reference/sq_get_location.html">sq_get_location()</a></code>)</li>
-<li>v2 Transactions Endpoint (<code><a href="../reference/sq_list_transactions.html">sq_list_transactions()</a></code>, <code><a href="../reference/sq_get_transaction.html">sq_get_transaction()</a></code>)</li>
-<li>v2 Customers Endpoint - CRUD (Create, Retrieve, Update, Delete) methods for customers with:
-<ul>
-<li>
-<code><a href="../reference/sq_list_customers.html">sq_list_customers()</a></code>, <code><a href="../reference/sq_search_customers.html">sq_search_customers()</a></code>, <code><a href="../reference/sq_get_customer.html">sq_get_customer()</a></code>, <code><a href="../reference/sq_create_customer.html">sq_create_customer()</a></code>, <code><a href="../reference/sq_update_customer.html">sq_update_customer()</a></code>, <code><a href="../reference/sq_delete_customer.html">sq_delete_customer()</a></code>
-</li>
-</ul>
-</li>
-<li>v1 Payments Endpoint (<code><a href="../reference/sq_list_payments.html">sq_list_payments()</a></code>, <code><a href="../reference/sq_get_payment.html">sq_get_payment()</a></code>)</li>
-<li>v1 Items Endpoint - CRUD (Create, Retrieve, Update, Delete) methods for items with:
-<ul>
-<li>
-<code><a href="../reference/sq_list_items.html">sq_list_items()</a></code>, <code><a href="../reference/sq_get_item.html">sq_get_item()</a></code>, <code><a href="../reference/sq_create_item.html">sq_create_item()</a></code>, <code><a href="../reference/sq_update_item.html">sq_update_item()</a></code>, <code><a href="../reference/sq_delete_item.html">sq_delete_item()</a></code>
-</li>
-</ul>
-</li>
-<li>List v1 records (<code><a href="../reference/sq_list_fees.html">sq_list_fees()</a></code>, <code><a href="../reference/sq_list_categories.html">sq_list_categories()</a></code>, <code><a href="../reference/sq_list_modifiers.html">sq_list_modifiers()</a></code>, <code><a href="../reference/sq_list_discounts.html">sq_list_discounts()</a></code>)</li>
-</ul>
-</div>
-</div>
-  </div>
+    <div class="ref-description">
+    
+    <p>Lists all of a location's fees.</p>
+    
+    </div>
 
+    <pre class="usage"><span class='fu'>sq_list_fees</span>(<span class='no'>location</span>, <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</pre>
+    
+    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
+    <table class="ref-arguments">
+    <colgroup><col class="name" /><col class="desc" /></colgroup>
+    <tr>
+      <th>location</th>
+      <td><p>character; the Square ID or name associated to a location. 
+This must be an exact match to the ID or name as found using <a href='sq_list_locations.html'>sq_list_locations</a>.</p></td>
+    </tr>
+    <tr>
+      <th>verbose</th>
+      <td><p>logical; do you want informative messages?</p></td>
+    </tr>
+    </table>
+    
+    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
+
+    <p><code>tbl_df</code> of fees</p>
+    
+    <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
+
+    <p>Required permissions: <code>ITEMS_READ</code></p>
+    
+
+    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
+    <pre class="examples"><span class='co'># NOT RUN {</span>
+<span class='no'>my_fees</span> <span class='kw'>&lt;-</span> <span class='fu'>sq_list_fees</span>(<span class='no'>location</span>)
+<span class='co'># }</span></pre>
+  </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
-    <div id="tocnav">
-      <h2>Contents</h2>
-      <ul class="nav nav-pills nav-stacked">
-        <li><a href="#squareupr-0009000">0.0.0.9000</a></li>
-      </ul>
-    </div>
-  </div>
+    <h2>Contents</h2>
+    <ul class="nav nav-pills nav-stacked">
+      <li><a href="#arguments">Arguments</a></li>
+      
+      <li><a href="#value">Value</a></li>
 
+      <li><a href="#details">Details</a></li>
+      
+      <li><a href="#examples">Examples</a></li>
+    </ul>
+
+  </div>
 </div>
 
       <footer>

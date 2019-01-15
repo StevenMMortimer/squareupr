@@ -79,13 +79,28 @@
     <loc>https://stevenmmortimer.github.io/squareupr/reference/sq_get_transaction.html</loc>
   </url>
   <url>
+    <loc>https://stevenmmortimer.github.io/squareupr/reference/sq_list_categories.html</loc>
+  </url>
+  <url>
     <loc>https://stevenmmortimer.github.io/squareupr/reference/sq_list_customers.html</loc>
+  </url>
+  <url>
+    <loc>https://stevenmmortimer.github.io/squareupr/reference/sq_list_discounts.html</loc>
+  </url>
+  <url>
+    <loc>https://stevenmmortimer.github.io/squareupr/reference/sq_list_fees.html</loc>
+  </url>
+  <url>
+    <loc>https://stevenmmortimer.github.io/squareupr/reference/sq_list_generic_v1.html</loc>
   </url>
   <url>
     <loc>https://stevenmmortimer.github.io/squareupr/reference/sq_list_items.html</loc>
   </url>
   <url>
     <loc>https://stevenmmortimer.github.io/squareupr/reference/sq_list_locations.html</loc>
+  </url>
+  <url>
+    <loc>https://stevenmmortimer.github.io/squareupr/reference/sq_list_modifiers.html</loc>
   </url>
   <url>
     <loc>https://stevenmmortimer.github.io/squareupr/reference/sq_list_payments.html</loc>

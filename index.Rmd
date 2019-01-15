@@ -30,6 +30,8 @@ knitr::opts_chunk$set(
   * v1 Payments Endpoint (`sq_list_payments()`, `sq_get_payment()`)
   * v1 Items Endpoint - CRUD (Create, Retrieve, Update, Delete) methods for items with: 
     * `sq_list_items()`, `sq_get_item()`, `sq_create_item()`, `sq_update_item()`, `sq_delete_item()`
+  * List v1 records (`sq_list_fees()`, `sq_list_categories()`, `sq_list_modifiers()`, 
+`sq_list_discounts()`)  
 
 ## Table of Contents  
   * [Installation](#installation)

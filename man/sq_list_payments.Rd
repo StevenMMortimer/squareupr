@@ -5,8 +5,8 @@
 \title{List Payments}
 \usage{
 sq_list_payments(location, begin_time = Sys.Date() - 1,
-  end_time = Sys.Date(), sort_order = c("DESC", "ASC"), cursor = NULL,
-  verbose = FALSE)
+  end_time = Sys.Date(), sort_order = c("DESC", "ASC"),
+  cursor = NULL, verbose = FALSE)
 }
 \arguments{
 \item{location}{character; the Square ID or name associated to a location. 

@@ -84,6 +84,11 @@ sq_auth <- function(personal_access_token = NULL,
     
     # OAuth 2.0 authentication -------------------------------------------------
     if (is.null(token)) {
+      
+      if(is.null(app_id) | is.null(app_secret)){
+        message("If using OAuth 2.0 please supply a non-NULL `app_id` and `app_secret`")
+      }
+      
       sq_oauth_app <- oauth_app("square",
                                 key = app_id, 
                                 secret = app_secret,

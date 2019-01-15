@@ -1,7 +1,7 @@
 Package: squareupr
 Title: An Implementation of 'Square' APIs
 Version: 0.0.0.9000
-Date: 2018-05-18
+Date: 2019-12-15
 Description: An implementation of the 'Square' Platform APIs (Connect v1, Connect v2) 
     <https://docs.connect.squareup.com/api/connect/v2>. 
     This package is an articulation of the most API methods into R. The API calls 
@@ -34,4 +34,4 @@ Suggests:
     here,
     tidyverse
 VignetteBuilder: knitr
-RoxygenNote: 6.0.1
+RoxygenNote: 6.1.0
