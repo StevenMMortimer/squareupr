@@ -4,7 +4,8 @@ squareupr_test_settings <- readRDS("squareupr_test_settings.rds")
 sq_auth(squareupr_test_settings$personal_access_token)
 
 req_discount_columns <- c("discount_type", "pin_required", "id", 
-                          "name", "rate", "amount_money", "v2_id")
+                          "name", "rate", "v2_id", "amount_money", "color")
+
 our_locations <- sq_list_locations()
 this_location <- our_locations$id[2]
 discounts <- sq_list_discounts(this_location)
