@@ -26,12 +26,12 @@ Imports:
     dplyr,
     tidyr,
     purrr,
-    lubridate
+    lubridate, 
+    rlang
 Suggests:
     knitr,
     testthat,
     rmarkdown,
-    here,
-    tidyverse
+    here
 VignetteBuilder: knitr
 RoxygenNote: 6.1.1
