@@ -45,8 +45,8 @@ get_os <- function(){
 #' This function reformats the groups field of a list of customers longways (i.e. 
 #' one row per customer per group).
 #'
-#' @importFrom dplyr mutate filter_ select_ as_tibble
-#' @importFrom tidyr unnest_
+#' @importFrom dplyr mutate filter select as_tibble
+#' @importFrom tidyr unnest
 #' @importFrom purrr transpose map_df
 #' @param customer_data \code{tbl_df} or \code{data.frame} containing an "id" and 
 #' "groups" field
@@ -61,12 +61,12 @@ sq_extract_cust_groups <- function(customer_data){
   stopifnot(all(c("id", "groups") %in% names(customer_data)))
   
   res <- customer_data %>%
-    select_("id", "groups") %>%
+    select(id, groups) %>%
     # drop the customers with NULL groups field
     mutate(groups_cnt = sapply(customer_data$groups, length)) %>%
-    filter_(.dots = "groups_cnt > 0") %>%
-    select_("id", "groups") %>%
-    unnest_("groups") %>%
+    filter(groups_cnt > 0) %>%
+    select(id, groups) %>%
+    unnest(groups) %>%
     transpose() %>%
     # convert the groups id and name into two separate columns
     map_df(~as_tibble(t(unlist(.))))

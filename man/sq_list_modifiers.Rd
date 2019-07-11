@@ -2,7 +2,7 @@
 % Please edit documentation in R/modifiers.R
 \name{sq_list_modifiers}
 \alias{sq_list_modifiers}
-\title{List Modifiers.}
+\title{List Modifiers}
 \usage{
 sq_list_modifiers(location, verbose = FALSE)
 }
