@@ -17,8 +17,10 @@
 ^\.httr-oauth-squareupr$
 ^docs$
 ^tic\.R$
-man-roxygen
-tests/testthat/squareupr.tar.enc
-tests/testthat/package.zip
-tests/testthat/.httr-oauth
-tests/testthat/.httr-oauth-squareupr
+^man-roxygen$
+^travis-tool\.sh$
+^travis-tool\.sh\.cmd$
+^tests/testthat/squareupr.tar.enc$
+^tests/testthat/package.zip$
+^tests/testthat/.httr-oauth$
+^tests/testthat/.httr-oauth-squareupr$
