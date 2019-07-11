@@ -3,7 +3,7 @@ context("v1 categories endpoint")
 squareupr_test_settings <- readRDS("squareupr_test_settings.rds")
 sq_auth(squareupr_test_settings$personal_access_token)
 
-req_category_columns <- c("id", "name")
+req_category_columns <- c("id", "name", "v2_id")
 our_locations <- sq_list_locations()
 this_location <- our_locations$id[2]
 categories <- sq_list_categories(this_location)

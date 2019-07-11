@@ -41,7 +41,7 @@ OAuth 2.0 User credentials will be stored in locally cached file entitled ".httr
 in the current working directory.
 
 ```{r auth, include = FALSE}
-library(tidyverse)
+library(dplyr)
 library(squareupr)
 settings <- readRDS(here::here("tests", "testthat", "squareupr_test_settings.rds"))
 suppressMessages(sq_auth(personal_access_token = settings$personal_access_token, 
@@ -49,7 +49,7 @@ suppressMessages(sq_auth(personal_access_token = settings$personal_access_token,
 ```
 
 ```{r, eval=FALSE}
-library(tidyverse)
+library(dplyr)
 library(squareupr)
 
 # Using Personal Access Token (PAT)

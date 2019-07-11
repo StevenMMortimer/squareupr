@@ -4,7 +4,8 @@ squareupr_test_settings <- readRDS("squareupr_test_settings.rds")
 sq_auth(squareupr_test_settings$personal_access_token)
 
 req_fee_columns <- c("inclusion_type", "enabled", "applies_to_custom_amounts", 
-                     "adjustment_type", "calculation_phase", "id", "name", "rate", "type")
+                     "adjustment_type", "calculation_phase", "id", "name", "rate", 
+                     "type", "v2_id")
 our_locations <- sq_list_locations()
 this_location <- our_locations$id[2]
 fees <- sq_list_fees(this_location)

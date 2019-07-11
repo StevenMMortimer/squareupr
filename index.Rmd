@@ -62,7 +62,7 @@ First, load the **squareupr** package and authenticate. There are two ways to au
   2. OAuth 2.0
 
 ```{r auth, include = FALSE}
-library(tidyverse)
+library(dplyr)
 library(squareupr)
 settings <- readRDS(here::here("tests", "testthat", "squareupr_test_settings.rds"))
 suppressMessages(sq_auth(personal_access_token = settings$personal_access_token, 
@@ -70,7 +70,7 @@ suppressMessages(sq_auth(personal_access_token = settings$personal_access_token,
 ```
 
 ```{r, eval=FALSE}
-library(tidyverse)
+library(dplyr)
 library(squareupr)
 
 # Using Personal Access Token (PAT)
@@ -105,8 +105,8 @@ used to pay in the transaction.
 # list all locations
 our_locations <- sq_list_locations()
 our_transactions <- sq_list_transactions(location = our_locations$id[2], 
-                                         begin_time = as.Date('2018-05-11'), 
-                                         end_time = as.Date('2018-05-12'))
+                                         begin_time = as.Date('2019-07-09'), 
+                                         end_time = as.Date('2019-07-10'))
 our_transactions
 ```
 
@@ -116,8 +116,8 @@ Once you pull data about transactions you can take the customer_id from the tran
 be placed into groups that allow for the analysis of transactions at a group-level.
 
 ```{r customers}
-# list customers created in the last 90 days
-created_start <- format(Sys.Date()-90, '%Y-%m-%dT00:00:00-00:00')
+# list customers created in the last 30 days
+created_start <- format(Sys.Date() - 30, '%Y-%m-%dT00:00:00-00:00')
 created_end <- format(Sys.Date(), '%Y-%m-%dT00:00:00-00:00')
 our_customers <- sq_search_customers(query = list(filter=
                                                     list(created_at=

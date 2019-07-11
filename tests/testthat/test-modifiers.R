@@ -3,7 +3,7 @@ context("v1 modifiers endpoint")
 squareupr_test_settings <- readRDS("squareupr_test_settings.rds")
 sq_auth(squareupr_test_settings$personal_access_token)
 
-req_modifier_columns <- c("modifier_options", "selection_type", "id", "name")
+req_modifier_columns <- c("modifier_options", "selection_type", "id", "name", "v2_id")
 our_locations <- sq_list_locations()
 this_location <- our_locations$id[2]
 modifiers <- sq_list_modifiers(this_location)
